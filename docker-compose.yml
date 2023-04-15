@@ -9,7 +9,7 @@ services:
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: pass
-      POSTGRES_DB: postgres
+      POSTGRES_DB: dating_app
     volumes:
       - db:/var/lib/postgresql/data
 volumes:
