@@ -5,6 +5,7 @@ import Hobbies from './pages/Hobbies/Hobbies';
 import CreateHobbies from './pages/Hobbies/CreateHobby';
 import Home from './pages/Home';
 import ScreenWrapper from './styles/ScreenWrapper';
+import EditHobby from './pages/Hobbies/EditHobby';
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -27,6 +28,7 @@ const App = () => {
           <Stack.Screen name="Home" component={Home}/>
           <Stack.Screen name="Hobbies" component={Hobbies} />
           <Stack.Screen name="CreateHobbies" component={CreateHobbies}/>
+          <Stack.Screen name="EditHobby" component={EditHobby}/>
         </Stack.Navigator>
       </NavigationContainer>
       </View>

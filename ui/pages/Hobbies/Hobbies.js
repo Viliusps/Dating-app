@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Text, ScrollView, StyleSheet, View, Modal } from 'react-native';
+import { Text, ScrollView, StyleSheet, View } from 'react-native';
 import { getHobbies, deleteHobbies } from '../../api/hobbies-axios';
 import { useIsFocused } from "@react-navigation/native";
 import ScreenWrapper from '../../styles/ScreenWrapper';
@@ -69,7 +69,10 @@ const Hobbies = props =>  {
                 <StyledButton
                   title="Delete"
                   onPress={() => handleDeleteButtonPress(hobby)}
-                  style={styles.deleteButton}
+                />
+                <StyledButton
+                  title="Edit"
+                  onPress={() => props.navigation.navigate('EditHobby', { hobby: hobby })}
                 />
               </View>
             </View>
@@ -128,10 +131,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     color: 'white'
-  },
-  deleteButton: {
-    margin: 0,
-    width: '100%'
   },
   Empty: {
     color: 'white',

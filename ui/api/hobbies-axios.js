@@ -15,3 +15,10 @@ export const deleteHobbies = async (id) => {
   const response = await axios.delete(REACT_APP_API_URL + `/hobbies/${id}`);
   return response.data;
 }
+
+export const putHobby = async (id, name) => {
+  const response = await axios.put(REACT_APP_API_URL + `/hobbies/${id}`, {
+      name: name
+      },);
+  return response.data;
+}
