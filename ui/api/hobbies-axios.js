@@ -7,6 +7,11 @@ export const getHobbies = async () => {
 };
 
 export const postHobbies = async (name) => {
-  const response = await axios.post( REACT_APP_API_URL + '/hobbies', {name: name});
+  const response = await axios.post(REACT_APP_API_URL + '/hobbies', {name: name});
   return response.data;
 };
+
+export const deleteHobbies = async (id) => {
+  const response = await axios.delete(REACT_APP_API_URL + `/hobbies/${id}`);
+  return response.data;
+}

@@ -10,16 +10,18 @@ const App = () => {
   const Stack = createStackNavigator();
 
   const screenOptions = {
-    headerTransparent: true
+    headerTransparent: true,
+    headerLeft: () => (
+        <Image
+          source={require('./assets/logo.jpg')}
+          style={styles.image}
+        />
+    ),
   };
 
   return (
     <ScreenWrapper>
       <View style={{ flex: 1 }} >
-        <Image
-          source={require('./assets/logo.jpg')}
-          style={styles.image}
-        />
       <NavigationContainer>
         <Stack.Navigator screenOptions={screenOptions}>
           <Stack.Screen name="Home" component={Home}/>
@@ -35,7 +37,8 @@ const App = () => {
 const styles = StyleSheet.create({
   image: {
     width: 100,
-    height: 100
+    height: 100,
+    marginTop: 15
   }
 });
 

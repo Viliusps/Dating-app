@@ -21,8 +21,8 @@
     "react-dom": "18.2.0",
     "react-native": "0.71.6",
     "react-native-dotenv": "^3.4.8",
-    "react-native-web": "~0.18.10",
-    "styled-components": "^5.3.9"
+    "react-native-table-component": "^1.2.2",
+    "react-native-web": "~0.18.10"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

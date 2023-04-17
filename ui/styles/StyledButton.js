@@ -15,9 +15,8 @@ const StyledButton = ({ title, onPress }) => {
 
 const styles = StyleSheet.create({
   button: {
-    marginRight: 40,
-    marginLeft: 40,
     marginTop: 10,
+    marginBottom: 10,
     paddingTop: 10,
     paddingBottom: 10,
     backgroundColor: '#BD4D5B',
