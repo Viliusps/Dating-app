@@ -12,7 +12,7 @@ public class HobbyService {
     private final HobbyRepository hobbyRepository;
 
     public List<Hobby> getAllHobbies() {
-        return hobbyRepository.findAll();
+        return hobbyRepository.findAllByOrderByIdAsc();
     }
 
     public Hobby getHobbyById(long id) {
