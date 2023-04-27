@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import ScreenWrapper from '../styles/ScreenWrapper';
 import StyledButton from '../styles/StyledButton';
+
 const Home = (props) => {
   const onPress = () => {
     props.navigation.navigate('Hobbies');
