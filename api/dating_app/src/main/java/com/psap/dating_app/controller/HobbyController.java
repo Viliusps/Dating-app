@@ -38,12 +38,12 @@ public class HobbyController {
     }
 
     @PostMapping
-    public ResponseEntity<Hobby> createUser(@Valid @RequestBody Hobby hobby) {
+    public ResponseEntity<Hobby> createHobby(@Valid @RequestBody Hobby hobby) {
         return new ResponseEntity<>(hobbyService.createHobby(hobby), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Hobby> updateUser(@PathVariable("id") long id, @Valid @RequestBody Hobby hobby) {
+    public ResponseEntity<Hobby> updateHobby(@PathVariable("id") long id, @Valid @RequestBody Hobby hobby) {
         if (hobbyService.existsHobby(id)) {
             return new ResponseEntity<>(hobbyService.updateHobby(id, hobby), HttpStatus.OK);
         } else {
@@ -52,7 +52,7 @@ public class HobbyController {
     }
 
     @DeleteMapping({"/{id}"})
-    public ResponseEntity<Hobby> deleteRoom(@PathVariable("id") Long id) {
+    public ResponseEntity<Hobby> deleteHobby(@PathVariable("id") Long id) {
         if (hobbyService.existsHobby(id)) {
             hobbyService.deleteHobby(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
