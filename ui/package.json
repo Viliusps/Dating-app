@@ -23,6 +23,7 @@
     "react-dom": "18.2.0",
     "react-native": "0.71.6",
     "react-native-dotenv": "^3.4.8",
+    "react-native-keyboard-aware-scroll-view": "^0.9.5",
     "react-native-web": "~0.18.10"
   },
   "devDependencies": {

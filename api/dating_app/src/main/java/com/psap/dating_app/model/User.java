@@ -2,6 +2,7 @@ package com.psap.dating_app.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.psap.dating_app.model.enums.Gender;
 import com.psap.dating_app.model.enums.MatchPurpose;
 import com.psap.dating_app.model.enums.Role;
@@ -16,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -57,8 +59,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    @NotBlank(message = "Birth date is mandatory")
+    @NotNull(message = "Birth date is mandatory")
     @Column(name = "birth_date", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private Date birthDate;
     
     @NotBlank(message = "Gender is mandatory")
@@ -66,7 +69,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @NotBlank(message = "Height is mandatory")
+    @NotNull(message = "Height is mandatory")
     @Column(name = "height", nullable = false)
     private Integer height;
 
@@ -82,16 +85,17 @@ public class User {
     @Enumerated(EnumType.STRING)
     private SearchGender searchGender;
 
-    @NotBlank(message = "Radius is mandatory")
+    @NotNull(message = "Radius is mandatory")
     @Column(name = "radius", nullable = false)
     private Integer radius;
 
-    @NotBlank(message = "Points is mandatory")
+    @NotNull(message = "Points is mandatory")
     @Column(name = "points", nullable = false)
     private Integer points;
 
-    @NotBlank(message = "Block end is mandatory")
+    @NotNull(message = "Block end is mandatory")
     @Column(name = "block_end", nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private Date blockEnd;
 
     @NotBlank(message = "Blocked is mandatory")
