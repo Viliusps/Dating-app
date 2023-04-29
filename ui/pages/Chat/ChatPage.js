@@ -45,6 +45,7 @@ const ChatPage = (props) => {
       });
       this.textInput.clear();
       Keyboard.dismiss();
+      scrollViewRef.current.scrollToEnd({ animated: true });
     });
   };
   return (
@@ -58,11 +59,11 @@ const ChatPage = (props) => {
             {messages.map((message) => (
               <>
                 {message.sender === userId ? (
-                  <View style={styles.myMessage}>
+                  <View key={message.id} style={styles.myMessage}>
                     <Text>{message.content}</Text>
                   </View>
                 ) : (
-                  <View style={styles.otherMessage}>
+                  <View key={message.id} style={styles.otherMessage}>
                     <Text>{message.content}</Text>
                   </View>
                 )}
