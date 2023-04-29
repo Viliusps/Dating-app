@@ -87,6 +87,8 @@ const Hobbies = (props) => {
   );
 };
 
+export default Hobbies;
+
 const styles = StyleSheet.create({
   view: {
     flex: 1,
@@ -137,5 +139,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   }
 });
-
-export default Hobbies;

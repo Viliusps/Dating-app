@@ -1,15 +1,16 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import ScreenWrapper from '../styles/ScreenWrapper';
 import StyledButton from '../styles/StyledButton';
 
 const Home = (props) => {
-  const onPress = () => {
-    props.navigation.navigate('Hobbies');
+  const onPress = (page) => {
+    props.navigation.navigate(page);
   };
 
   return (
     <ScreenWrapper>
+      <Text>Laikinai prisijungio vartotojo id: 1</Text>
       <View
         style={{
           flex: 1,
@@ -17,7 +18,8 @@ const Home = (props) => {
           alignItems: 'center',
           backgroundColor: 'transparent'
         }}>
-        <StyledButton title="Hobbies" onPress={() => onPress()} />
+        <StyledButton title="Hobbies" onPress={() => onPress('Hobbies')} />
+        <StyledButton title="Chat" onPress={() => onPress('ChatPage')} />
       </View>
     </ScreenWrapper>
   );
