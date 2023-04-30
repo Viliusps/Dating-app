@@ -1,6 +1,6 @@
 package com.psap.dating_app.repository;
 
-import com.psap.dating_app.model.Couple;
+import com.psap.dating_app.model.Message;
 
 import java.util.List;
 
@@ -9,12 +9,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CoupleRepository extends JpaRepository<Couple, Long> {
-    public List<Couple> findAllByOrderByIdAsc();
+public interface MessageRepository extends JpaRepository<Message, Long> {
+    public List<Message> findAllByOrderByIdAsc();
 
         @Query(
-        value = "SELECT * FROM couples c WHERE c.first=:id OR c.second=:id",
+        value = "SELECT * FROM messages m WHERE m.chat=:id",
             nativeQuery = true
         )
-    public Couple findCoupleByUser(long id);
+    public List<Message> findByChatId(long id);
 }
