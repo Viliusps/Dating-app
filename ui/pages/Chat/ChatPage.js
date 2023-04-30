@@ -44,7 +44,6 @@ const ChatPage = (props) => {
         setMessages(messages);
       });
       this.textInput.clear();
-      Keyboard.dismiss();
       scrollViewRef.current.scrollToEnd({ animated: true });
     });
   };
@@ -55,21 +54,19 @@ const ChatPage = (props) => {
         style={{ maxHeight: '87%' }}
         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
         {messages.length > 0 ? (
-          <>
-            {messages.map((message) => (
-              <>
-                {message.sender === userId ? (
-                  <View key={message.id} style={styles.myMessage}>
-                    <Text>{message.content}</Text>
-                  </View>
-                ) : (
-                  <View key={message.id} style={styles.otherMessage}>
-                    <Text>{message.content}</Text>
-                  </View>
-                )}
-              </>
-            ))}
-          </>
+          messages.map((message) => (
+            <>
+              {message.sender === userId ? (
+                <View key={message.id} style={styles.myMessage}>
+                  <Text>{message.content}</Text>
+                </View>
+              ) : (
+                <View key={message.id} style={styles.otherMessage}>
+                  <Text>{message.content}</Text>
+                </View>
+              )}
+            </>
+          ))
         ) : (
           <View style={styles.view}>
             <Text style={styles.Empty}>You have no messages yet. Start chatting!</Text>
