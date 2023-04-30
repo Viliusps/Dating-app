@@ -1,17 +1,24 @@
-import axios from 'axios';
 import { REACT_APP_API_URL } from '@env';
 
 export const getMessagesByChat = async (id) => {
-  const response = await axios.get(REACT_APP_API_URL + `/messages/byChat/${id}`);
-  return response.data;
+  const response = await fetch(REACT_APP_API_URL + `/messages/byChat/${id}`);
+  const data = await response.json();
+  return data;
 };
 
 export const postMessage = async (content, date, sender, chat) => {
-  const response = await axios.post(REACT_APP_API_URL + '/messages', {
-    content: content,
-    date: date,
-    sender: sender,
-    chat: chat
+  const response = await fetch(REACT_APP_API_URL + '/messages', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      content: content,
+      date: date,
+      sender: sender,
+      chat: chat
+    })
   });
-  return response.data;
+  const data = await response.json();
+  return data;
 };

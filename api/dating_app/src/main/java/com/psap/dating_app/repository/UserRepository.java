@@ -10,4 +10,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     public List<User> findAllByOrderByIdAsc();
+
+    public User findByEmail(String email);
+
+    public Boolean existsByEmail(String email);
+
 }

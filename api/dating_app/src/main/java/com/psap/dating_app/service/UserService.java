@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.psap.dating_app.model.User;
+import com.psap.dating_app.model.enums.Gender;
+import com.psap.dating_app.model.requests.LoginRequest;
 import com.psap.dating_app.repository.UserRepository;
 
 @AllArgsConstructor
@@ -20,12 +22,38 @@ public class UserService {
         return userRepository.findById(id).get();
     }
 
-    public User createUser(User user) {
+    public User createUser(User user) throws IllegalAccessException {
+        if(userRepository.existsByEmail(user.getEmail()))
+        {
+            throw new IllegalAccessException(null);
+        }
         return userRepository.save(user);
     }
 
     public boolean existsUser(long id) {
         return userRepository.existsById(id);
+    }
+
+    public User login(LoginRequest request) throws IllegalAccessException {
+
+        if(userRepository.existsByEmail(request.getEmail()))
+        {
+            User userFromDb = userRepository.findByEmail(request.getEmail());
+            System.out.println(userFromDb);
+            if(userFromDb.getPassword().compareTo(request.getPassword()) == 0)
+            {
+                if(userFromDb.getBlocked())
+                {
+                    throw new IllegalAccessException();
+                }
+                else
+                {
+                    return userFromDb;
+                }
+            }
+            throw new IllegalAccessException();
+        }
+        throw new IllegalAccessException();
     }
 
     public User updateUser(Long id, User user) {

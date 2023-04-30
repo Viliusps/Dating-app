@@ -1,28 +1,39 @@
-import axios from 'axios';
 import { REACT_APP_API_URL } from '@env';
 
 export const getCouples = async () => {
-  const response = await axios.get(REACT_APP_API_URL + '/couples');
-  return response.data;
+  const response = await fetch(REACT_APP_API_URL + '/couples');
+  const data = await response.json();
+  return data;
 };
 
 export const postCouples = async (date, weigh_diff, first, second, status) => {
-  const response = await axios.post(REACT_APP_API_URL + '/couples', {
-    date: date,
-    weightDiff: weigh_diff,
-    first: first,
-    second: second,
-    status: status
+  const response = await fetch(REACT_APP_API_URL + '/couples', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      date: date,
+      weightDiff: weigh_diff,
+      first: first,
+      second: second,
+      status: status
+    })
   });
-  return response.data;
+  const data = await response.json();
+  return data;
 };
 
 export const deleteCouples = async (id) => {
-  const response = await axios.delete(REACT_APP_API_URL + `/couples/${id}`);
-  return response.data;
+  const response = await fetch(REACT_APP_API_URL + `/couples/${id}`, {
+    method: 'DELETE'
+  });
+  const data = await response.json();
+  return data;
 };
 
 export const getCoupleByUserId = async (userId) => {
-  const response = await axios.get(REACT_APP_API_URL + `/couples/byUser/${userId}`);
-  return response.data;
+  const response = await fetch(REACT_APP_API_URL + `/couples/byUser/${userId}`);
+  const data = await response.json();
+  return data;
 };

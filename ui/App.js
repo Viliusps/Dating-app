@@ -8,6 +8,8 @@ import Home from './pages/Home';
 import ScreenWrapper from './styles/ScreenWrapper';
 import EditHobby from './pages/Hobbies/EditHobby';
 import ChatPage from './pages/Chat/ChatPage';
+import RegistrationPage from './pages/Auth/RegistrationPage';
+import LoginPage from './pages/Auth/LoginPage';
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -27,6 +29,8 @@ const App = () => {
             <Stack.Screen name="CreateHobbies" component={CreateHobbies} />
             <Stack.Screen name="EditHobby" component={EditHobby} />
             <Stack.Screen name="ChatPage" component={ChatPage} />
+            <Stack.Screen name="Register" component={RegistrationPage} />
+            <Stack.Screen name="Login" component={LoginPage} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>

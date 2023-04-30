@@ -6,13 +6,13 @@ CREATE TABLE users
     email               VARCHAR(255),
     password            VARCHAR(255),
     phone               VARCHAR(255),
-    role                roles,
+    role                VARCHAR(255),
     birth_date          TIMESTAMPTZ,
-    gender              genders,
+    gender              VARCHAR(255),
     height              INT,
     picture             VARCHAR(255),
     description         TEXT,
-    search_gender       search_genders,
+    search_gender       VARCHAR(255),
     radius              INT,
     points              INT,
     block_end           TIMESTAMPTZ,
@@ -20,7 +20,7 @@ CREATE TABLE users
     star_sign           VARCHAR(255),
     personality_type    VARCHAR(255),
     love_language       VARCHAR(255),
-    match_purpose       purposes,
+    match_purpose       VARCHAR(255),
   	CONSTRAINT users_pk PRIMARY KEY (id)
 );
 
