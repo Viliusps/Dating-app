@@ -39,7 +39,6 @@ public class UserService {
         if(userRepository.existsByEmail(request.getEmail()))
         {
             User userFromDb = userRepository.findByEmail(request.getEmail());
-            System.out.println(userFromDb);
             if(userFromDb.getPassword().compareTo(request.getPassword()) == 0)
             {
                 if(userFromDb.getBlocked())
