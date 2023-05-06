@@ -55,7 +55,7 @@ const ChatPage = (props) => {
         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
         {messages.length > 0 ? (
           messages.map((message) =>
-            message.sender === userId ? (
+            message.sender == userId ? (
               <View key={message.id} style={styles.myMessage}>
                 <Text>{message.content}</Text>
               </View>
@@ -185,5 +185,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center'
   },
-  Empty: {}
+  Empty: {
+    color: 'white',
+    textAlign: 'center',
+    fontSize: 18
+  }
 });

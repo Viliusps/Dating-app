@@ -20,7 +20,7 @@ CREATE TABLE couples
     weight_diff FLOAT,
     first       BIGINT,
     second      BIGINT,
-    status      couple_status,
+    status      VARCHAR(255),
     chat        BIGINT,
     CONSTRAINT couple_pk      PRIMARY KEY (id),
     FOREIGN KEY(first) 

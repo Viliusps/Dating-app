@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.psap.dating_app.model.User;
+import com.psap.dating_app.model.requests.LoginRequest;
 import com.psap.dating_app.service.UserService;
 
 @AllArgsConstructor
@@ -39,8 +40,17 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) throws IllegalAccessException {
         return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<User> login(@Valid @RequestBody LoginRequest request) throws IllegalAccessException {
+        try{
+            return new ResponseEntity<>(userService.login(request), HttpStatus.CREATED);
+        } catch (IllegalAccessException e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PutMapping("/{id}")

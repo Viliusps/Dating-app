@@ -24,3 +24,12 @@ Over the `Configuration file` section you can enable `Treat Checkstyle errors as
 To add Checkstyle, go to `Extensions` and install `Checkstyle for Java` plugin.
 To add local configuration right click on `checkstyle.xml` file and click
 `Set the Checkstyle Configuration File`. In `.vscode->settings.json` add `"java.checkstyle.version": "8.43"`.
+
+### Mock data
+For testing purposes, you can login with one of these accounts:
+
+1) Email: pirmas@gmail.com, Password: pirmas
+2) Email: antras@gmail.com, Password: antras
+3) Email: trecia@gmail.com, Password: trecia
+
+Nr. 1 and Nr 2. are matched

@@ -54,7 +54,7 @@ public class User {
     @Column(name = "phone", nullable = false)
     private String phone;
 
-    @NotBlank(message = "Role is mandatory")
+    @NotNull(message = "Role is mandatory")
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -64,7 +64,7 @@ public class User {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private Date birthDate;
     
-    @NotBlank(message = "Gender is mandatory")
+    @NotNull(message = "Gender is mandatory")
     @Column(name = "gender", nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -76,11 +76,10 @@ public class User {
     @Column(name = "picture")
     private String picture;
 
-    @NotBlank(message = "Description is mandatory")
     @Column(name = "description", nullable = false)
     private String description;
 
-    @NotBlank(message = "Search gender is mandatory")
+    @NotNull(message = "Search gender is mandatory")
     @Column(name = "search_gender", nullable = false)
     @Enumerated(EnumType.STRING)
     private SearchGender searchGender;
@@ -93,28 +92,24 @@ public class User {
     @Column(name = "points", nullable = false)
     private Integer points;
 
-    @NotNull(message = "Block end is mandatory")
     @Column(name = "block_end", nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     private Date blockEnd;
 
-    @NotBlank(message = "Blocked is mandatory")
+    @NotNull(message = "Blocked is mandatory")
     @Column(name = "blocked", nullable = false)
     private Boolean blocked;
 
-    @NotBlank(message = "Star sign is mandatory")
     @Column(name = "star_sign", nullable = false)
     private String starSign;
 
-    @NotBlank(message = "Personality type is mandatory")
     @Column(name = "personality_type", nullable = false)
     private String personalityType;
 
-    @NotBlank(message = "Love language is mandatory")
     @Column(name = "love_language", nullable = false)
     private String loveLanguage;
 
-    @NotBlank(message = "Match purpose is mandatory")
+    @NotNull(message = "Match purpose is mandatory")
     @Column(name = "match_purpose", nullable = false)
     @Enumerated(EnumType.STRING)
     private MatchPurpose matchPurpose;

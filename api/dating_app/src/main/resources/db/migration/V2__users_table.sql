@@ -6,13 +6,13 @@ CREATE TABLE users
     email               VARCHAR(255),
     password            VARCHAR(255),
     phone               VARCHAR(255),
-    role                roles,
+    role                VARCHAR(255),
     birth_date          TIMESTAMPTZ,
-    gender              genders,
+    gender              VARCHAR(255),
     height              INT,
     picture             VARCHAR(255),
     description         TEXT,
-    search_gender       search_genders,
+    search_gender       VARCHAR(255),
     radius              INT,
     points              INT,
     block_end           TIMESTAMPTZ,
@@ -20,17 +20,17 @@ CREATE TABLE users
     star_sign           VARCHAR(255),
     personality_type    VARCHAR(255),
     love_language       VARCHAR(255),
-    match_purpose       purposes,
+    match_purpose       VARCHAR(255),
   	CONSTRAINT users_pk PRIMARY KEY (id)
 );
 
 INSERT INTO users (id, name, surname, email, password, phone, role, birth_date, gender, height, picture, description, search_gender, radius, points, block_end, blocked, star_sign, personality_type, love_language, match_purpose) VALUES
 (1, 'pirmas', 'pirmasis', 'pirmas@gmail.com', 'pirmas', '123456789', 'USER', '2023-04-29 10:54:17.851+00', 'MALE', '182', '', 'description', 'FEMALE', '50', '0', null, false, 'Aries', 'idk', 'idk2', 'LONG'),
 (2, 'antras', 'antrasis', 'antras@gmail.com', 'antras', '123456789', 'USER', '2023-04-29 10:54:17.851+00', 'MALE', '175', '', 'description', 'FEMALE', '50', '0', null, false, 'Aries', 'idk', 'idk2', 'LONG'),
-(3, 'trecia', 'trecioji', 'pirmas@gmail.com', 'trecia', '123456789', 'USER', '2023-04-29 10:54:17.851+00', 'FEMALE', '170', '', 'description', 'FEMALE', '50', '0', null, false, 'Aries', 'idk', 'idk2', 'LONG'),
-(4, 'ketvirta', 'ketvirtoji', 'pirmas@gmail.com', 'ketvirta', '123456789', 'USER', '2023-04-29 10:54:17.851+00', 'FEMALE', '172', '', 'description', 'FEMALE', '50', '0', null, false, 'Aries', 'idk', 'idk2', 'LONG'),
+(3, 'trecia', 'trecioji', 'trecia@gmail.com', 'trecia', '123456789', 'USER', '2023-04-29 10:54:17.851+00', 'FEMALE', '170', '', 'description', 'FEMALE', '50', '0', null, false, 'Aries', 'idk', 'idk2', 'LONG'),
+(4, 'ketvirta', 'ketvirtoji', 'ketvirta@gmail.com', 'ketvirta', '123456789', 'USER', '2023-04-29 10:54:17.851+00', 'FEMALE', '172', '', 'description', 'FEMALE', '50', '0', null, false, 'Aries', 'idk', 'idk2', 'LONG'),
 (5, 'penktas', 'penktasis', 'penktas@gmail.com', 'penktas', '123456789', 'USER', '2023-04-29 10:54:17.851+00', 'MALE', '172', '', 'description', 'MALE', '50', '0', null, false, 'Aries', 'idk', 'idk2', 'LONG'),
-(6, 'sesta', 'sestoji', 'pirmas@gmail.com', 'sesta', '123456789', 'USER', '2023-04-29 10:54:17.851+00', 'FEMALE', '160', '', 'description', 'FEMALE', '50', '0', null, false, 'Aries', 'idk', 'idk2', 'LONG');
+(6, 'sesta', 'sestoji', 'sesta@gmail.com', 'sesta', '123456789', 'USER', '2023-04-29 10:54:17.851+00', 'FEMALE', '160', '', 'description', 'FEMALE', '50', '0', null, false, 'Aries', 'idk', 'idk2', 'LONG');
 
 
 SELECT SETVAL('public.users_id_seq', COALESCE(MAX(id), 1) ) FROM public.users;
