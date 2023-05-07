@@ -1,6 +1,8 @@
 package com.psap.dating_app.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.psap.dating_app.model.enums.Gender;
@@ -8,14 +10,7 @@ import com.psap.dating_app.model.enums.MatchPurpose;
 import com.psap.dating_app.model.enums.Role;
 import com.psap.dating_app.model.enums.SearchGender;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -113,4 +108,8 @@ public class User {
     @Column(name = "match_purpose", nullable = false)
     @Enumerated(EnumType.STRING)
     private MatchPurpose matchPurpose;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name="user_id")
+    private List<Song> songs = new ArrayList<>();
 }

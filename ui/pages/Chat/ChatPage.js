@@ -1,20 +1,29 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Text, StyleSheet, View, TextInput, KeyboardAvoidingView, ScrollView } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  TextInput,
+  KeyboardAvoidingView,
+  Linking,
+  TouchableOpacity,
+  ActivityIndicator
+} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useIsFocused } from '@react-navigation/native';
 import ScreenWrapper from '../../styles/ScreenWrapper';
-import { getUser } from '../../api/users-axios';
 import { getCoupleByUserId } from '../../api/couples-axios';
 import { Icon } from '@rneui/themed';
 import { useHeaderHeight } from '@react-navigation/elements';
 import { getMessagesByChat, postMessage } from '../../api/messages-axios';
-import { Keyboard } from 'react-native';
+import { getSentSongsByChat } from '../../api/sent-song-axios';
+import { findSongRecommendation, getSongIdById } from '../../api/songs-axios';
 
 const ChatPage = (props) => {
   const [couple, setCouple] = useState(null);
-  const [otherPerson, setOtherPerson] = useState(null);
   const [messages, setMessages] = useState([]);
   const [Message, setMessage] = useState('');
+  const [loader, setLoader] = useState(false);
   const isFocused = useIsFocused();
   const userId = props.route.params.userId;
   const height = useHeaderHeight();
@@ -23,30 +32,61 @@ const ChatPage = (props) => {
   useEffect(() => {
     getCoupleByUserId(userId).then((couple) => {
       setCouple(couple);
-      let otherUser = null;
-      if (userId === couple.first) {
-        otherUser = couple.second;
-      } else if (userId === couple.second) {
-        otherUser = couple.first;
-      }
-      getUser(otherUser).then((user) => {
-        setOtherPerson(user);
-      });
       getMessagesByChat(couple.chat).then((messages) => {
-        setMessages(messages);
+        getSentSongsByChat(couple.chat).then((songs) => {
+          var merged = messages.concat(songs);
+          merged.songID = undefined;
+          merged.sort(function (a, b) {
+            const dateA = new Date(a.date);
+            const dateB = new Date(b.date);
+            return dateA - dateB;
+          });
+          setMessages(merged);
+        });
       });
     });
   }, [isFocused]);
 
-  const sendMessage = () => {
-    postMessage(Message, new Date(), userId, couple.chat).then(() => {
-      getMessagesByChat(couple.chat).then((messages) => {
-        setMessages(messages);
+  const updateChat = () => {
+    getMessagesByChat(couple.chat).then((messages) => {
+      getSentSongsByChat(couple.chat).then((songs) => {
+        var merged = messages.concat(songs);
+        merged.songID = undefined;
+        merged.sort(function (a, b) {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          return dateA - dateB;
+        });
+        merged.map((e, i) => (e.keyID = i));
+        setMessages(merged);
       });
-      this.textInput.clear();
-      scrollViewRef.current.scrollToEnd({ animated: true });
+    });
+    this.textInput.clear();
+    setMessage('');
+    scrollViewRef.current.scrollToEnd({ animated: true });
+  };
+
+  const sendMessage = () => {
+    setLoader(true);
+    if (Message === '!song') {
+      findSongRecommendation(userId, couple.second, couple.chat).then(() => {
+        updateChat();
+        setLoader(false);
+      });
+    } else {
+      postMessage(Message, new Date(), userId, couple.chat).then(() => {
+        updateChat();
+        setLoader(false);
+      });
+    }
+  };
+
+  const getSongURL = async (id) => {
+    return await getSongIdById(id).then((value) => {
+      return `https://open.spotify.com/track/${value.songID}?utm_source=generator`;
     });
   };
+
   return (
     <ScreenWrapper>
       <KeyboardAwareScrollView
@@ -55,14 +95,36 @@ const ChatPage = (props) => {
         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
         {messages.length > 0 ? (
           messages.map((message) =>
-            message.sender == userId ? (
-              <View key={message.id} style={styles.myMessage}>
+            message.sender.toString() === userId ? (
+              message.songID === undefined ? (
+                <View key={message.keyID} style={styles.myMessage}>
+                  <Text>{message.content}</Text>
+                </View>
+              ) : (
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  key={message.keyID}
+                  style={styles.myMessage}
+                  onPress={async () => {
+                    Linking.openURL(await getSongURL(message.songID));
+                  }}>
+                  <Icon name="play-circle" type="ionicon" size={32} />
+                  <Text style={styles.songLink}>Recommended Song</Text>
+                </TouchableOpacity>
+              )
+            ) : message.songID === undefined ? (
+              <View key={message.keyID} style={styles.otherMessage}>
                 <Text>{message.content}</Text>
               </View>
             ) : (
-              <View key={message.id} style={styles.otherMessage}>
-                <Text>{message.content}</Text>
-              </View>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                key={message.keyID}
+                style={styles.otherMessage}
+                onPress={async () => Linking.openURL(await getSongURL(message.songID))}>
+                <Icon name="play-circle" type="ionicon" size={32} />
+                <Text style={styles.songLink}>Recommended Song</Text>
+              </TouchableOpacity>
             )
           )
         ) : (
@@ -99,6 +161,7 @@ const ChatPage = (props) => {
           />
           <View style={styles.searchSection}>
             <TextInput
+              placeholder="Try '!song' ..."
               ref={(input) => {
                 this.textInput = input;
               }}
@@ -110,13 +173,18 @@ const ChatPage = (props) => {
               }}
               onChangeText={setMessage}
             />
-            <Icon
-              style={styles.icon}
-              name="ios-send-sharp"
-              type="ionicon"
-              color="black"
-              onPress={() => sendMessage()}
-            />
+            {loader ? (
+              <ActivityIndicator size="large" />
+            ) : (
+              <Icon
+                disabled={loader}
+                style={styles.icon}
+                name="ios-send-sharp"
+                type="ionicon"
+                color="black"
+                onPress={() => sendMessage()}
+              />
+            )}
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -189,5 +257,6 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontSize: 18
-  }
+  },
+  songLink: { textDecorationLine: 'underline' }
 });

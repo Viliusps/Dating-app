@@ -41,7 +41,6 @@ public class MessageController {
     @GetMapping("/byChat/{id}")
     public ResponseEntity<List<Message>> getMessagesByChatId(@PathVariable("id") long id) {
         return new ResponseEntity<>(messageService.getMessagesByChatId(id), HttpStatus.OK);
-
     }
 
     @PostMapping

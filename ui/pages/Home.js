@@ -21,6 +21,7 @@ const Home = (props) => {
       setUserId(null);
     });
   };
+
   return (
     <ScreenWrapper>
       <Text>Logged in user id: {userId}</Text>

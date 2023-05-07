@@ -2,8 +2,7 @@ import { REACT_APP_API_URL } from '@env';
 
 export const getMessagesByChat = async (id) => {
   const response = await fetch(REACT_APP_API_URL + `/messages/byChat/${id}`);
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export const postMessage = async (content, date, sender, chat) => {
@@ -19,6 +18,5 @@ export const postMessage = async (content, date, sender, chat) => {
       chat: chat
     })
   });
-  const data = await response.json();
-  return data;
+  return await response.json();
 };

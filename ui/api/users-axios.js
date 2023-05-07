@@ -2,8 +2,7 @@ import { REACT_APP_API_URL } from '@env';
 
 export const getUser = async (id) => {
   const response = await fetch(REACT_APP_API_URL + `/users/${id}`);
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export const login = async (email, password) => {
@@ -17,8 +16,7 @@ export const login = async (email, password) => {
       password: password
     })
   });
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export const register = async (
@@ -64,6 +62,5 @@ export const register = async (
   if (!response.ok) {
     throw new Error('Request failed');
   }
-  const data = await response.json();
-  return data;
+  return await response.json();
 };

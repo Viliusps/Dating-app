@@ -2,8 +2,7 @@ import { REACT_APP_API_URL } from '@env';
 
 export const getCouples = async () => {
   const response = await fetch(REACT_APP_API_URL + '/couples');
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export const postCouples = async (date, weigh_diff, first, second, status) => {
@@ -20,20 +19,17 @@ export const postCouples = async (date, weigh_diff, first, second, status) => {
       status: status
     })
   });
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export const deleteCouples = async (id) => {
   const response = await fetch(REACT_APP_API_URL + `/couples/${id}`, {
     method: 'DELETE'
   });
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export const getCoupleByUserId = async (userId) => {
   const response = await fetch(REACT_APP_API_URL + `/couples/byUser/${userId}`);
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
