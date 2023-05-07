@@ -8,7 +8,7 @@ const EditHobby = (props) => {
   const hobby = props.route.params.hobby;
   const [name, setName] = useState(hobby.name);
   const editHobby = () => {
-    if (name != '') {
+    if (name !== '') {
       putHobby(hobby.id, name).then(() => {
         props.navigation.navigate('Hobbies');
       });

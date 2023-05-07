@@ -2,8 +2,7 @@ import { REACT_APP_API_URL } from '@env';
 
 export const getHobbies = async () => {
   const response = await fetch(REACT_APP_API_URL + '/hobbies');
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export const postHobbies = async (name) => {
@@ -14,16 +13,14 @@ export const postHobbies = async (name) => {
     },
     body: JSON.stringify({ name: name })
   });
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export const deleteHobbies = async (id) => {
   const response = await fetch(REACT_APP_API_URL + `/hobbies/${id}`, {
     method: 'DELETE'
   });
-  const data = await response.json();
-  return data;
+  return await response.json();
 };
 
 export const putHobby = async (id, name) => {
@@ -34,6 +31,5 @@ export const putHobby = async (id, name) => {
     },
     body: JSON.stringify({ name: name })
   });
-  const data = await response.json();
-  return data;
+  return await response.json();
 };

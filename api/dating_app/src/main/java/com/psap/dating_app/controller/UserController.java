@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<User> login(@Valid @RequestBody LoginRequest request) throws IllegalAccessException {
+    public ResponseEntity<User> login(@Valid @RequestBody LoginRequest request) {
         try{
             return new ResponseEntity<>(userService.login(request), HttpStatus.CREATED);
         } catch (IllegalAccessException e) {

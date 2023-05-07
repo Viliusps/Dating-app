@@ -8,7 +8,7 @@ const CreateHobbies = (props) => {
   const [name, setName] = useState('');
 
   const createHobby = () => {
-    if (name != '') {
+    if (name !== '') {
       postHobbies(name).then(() => {
         props.navigation.navigate('Hobbies');
       });
