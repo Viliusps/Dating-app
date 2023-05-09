@@ -25,7 +25,7 @@ public class SongService {
     SongRepository songRepository;
     SentSongRepository sentSongRepository;
 
-    public List<String> getAllSongsByUser(long id) {
+    public List<String> getSongs(long id) {
         return songRepository.getFirst100ByUserID(id);
     }
 
@@ -58,8 +58,8 @@ public class SongService {
         return new RestTemplate().exchange(url, HttpMethod.GET, request, FeaturesResponse.class).getBody().getAudio_features();
     }
 
-    public SongIDResponse getRecommendation(String token, List<String> songs, List<FeatureResponse> features, Long userID, Long chatID) {
-        RecommendationRequest recommendationRequest = getFeatureAverage(features);
+    public SongIDResponse getRecommendations(String token, List<String> songs, List<FeatureResponse> features, Long userID, Long chatID) {
+        RecommendationRequest recommendationRequest = getFeaturesAverage(features);
         List<String> seedTracks = songs.stream().limit(5).toList();
         StringBuilder refactoredSeedTracks = new StringBuilder();
         for (int i=0; i<seedTracks.size(); i++) {
@@ -113,21 +113,29 @@ public class SongService {
         newSong.setSongID(chosenId);
         newSong.setUserID(userID);
         newSong.setDate(new Date());
-        Song savedSong = songRepository.save(newSong);
+        Song savedSong = saveSong(newSong);
 
         SentSong newSentSong = new SentSong();
         newSentSong.setSongID(savedSong.getId());
         newSentSong.setSender(userID);
         newSentSong.setDate(new Date());
         newSentSong.setChatID(chatID);
-        sentSongRepository.save(newSentSong);
+        SentSong savedSentSong = saveSentSong(newSentSong);
 
         SongIDResponse songIDResponse = new SongIDResponse();
         songIDResponse.setSongID(chosenId);
         return songIDResponse;
     }
 
-    public RecommendationRequest getFeatureAverage(List<FeatureResponse> features) {
+    public Song saveSong(Song song) {
+        return songRepository.save(song);
+    }
+
+    public SentSong saveSentSong(SentSong song) {
+        return sentSongRepository.save(song);
+    }
+
+    public RecommendationRequest getFeaturesAverage(List<FeatureResponse> features) {
         RecommendationRequest recommendationRequest = new RecommendationRequest();
         for (FeatureResponse feature : features) {
             recommendationRequest.setTarget_acousticness(recommendationRequest.getTarget_acousticness() + feature.getAcousticness());

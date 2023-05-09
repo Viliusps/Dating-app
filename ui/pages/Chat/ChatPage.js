@@ -7,7 +7,8 @@ import {
   KeyboardAvoidingView,
   Linking,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useIsFocused } from '@react-navigation/native';
@@ -69,7 +70,15 @@ const ChatPage = (props) => {
   const sendMessage = () => {
     setLoader(true);
     if (Message === '!song') {
-      findSongRecommendation(userId, couple.second, couple.chat).then(() => {
+      findSongRecommendation(userId, couple.second, couple.chat).then((body) => {
+        if (body.songID === null) {
+          Alert.alert('Alert', 'You have no songs yet!', [
+            {
+              text: 'Close',
+              style: 'cancel'
+            }
+          ]);
+        }
         updateChat();
         setLoader(false);
       });
