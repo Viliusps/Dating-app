@@ -66,7 +66,7 @@ const ChatPage = (props) => {
     scrollViewRef.current.scrollToEnd({ animated: true });
   };
 
-  const sendMessage = () => {
+  const writeMessage = () => {
     setLoader(true);
     if (Message === '!song') {
       findSongRecommendation(userId, couple.second, couple.chat).then(() => {
@@ -182,7 +182,7 @@ const ChatPage = (props) => {
                 name="ios-send-sharp"
                 type="ionicon"
                 color="black"
-                onPress={() => sendMessage()}
+                onPress={() => writeMessage()}
               />
             )}
           </View>

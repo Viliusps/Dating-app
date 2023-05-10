@@ -22,7 +22,7 @@ public class UserService {
         return userRepository.findById(id).get();
     }
 
-    public User createUser(User user) throws IllegalAccessException {
+    public User register(User user) throws IllegalAccessException {
         if(userRepository.existsByEmail(user.getEmail()))
         {
             throw new IllegalAccessException(null);
@@ -39,9 +39,9 @@ public class UserService {
         if(userRepository.existsByEmail(request.getEmail()))
         {
             User userFromDb = userRepository.findByEmail(request.getEmail());
-            if(userFromDb.getPassword().compareTo(request.getPassword()) == 0)
+            if(validate(userFromDb, request))
             {
-                if(userFromDb.getBlocked())
+                if(authenticate(userFromDb))
                 {
                     throw new IllegalAccessException();
                 }
@@ -53,6 +53,14 @@ public class UserService {
             throw new IllegalAccessException();
         }
         throw new IllegalAccessException();
+    }
+
+    public Boolean validate(User userFromDb, LoginRequest request) {
+        return userFromDb.getPassword().compareTo(request.getPassword()) == 0;
+    }
+
+    public Boolean authenticate(User userFromDb) {
+        return userFromDb.getBlocked();
     }
 
     public User updateUser(Long id, User user) {
