@@ -21,12 +21,12 @@ public class SongController {
 
     @PostMapping("/recommend")
     public ResponseEntity<SongIDResponse> findSongRecommendation(@RequestBody SongRecommendationRequest request) {
-        List<String> userSongs = songService.getAllSongsByUser(request.getUserID());
-        if(userSongs.isEmpty()) return new ResponseEntity<>(new SongIDResponse(),HttpStatus.NOT_FOUND);
+        List<String> userSongs = songService.getSongs(request.getUserID());
+        if(userSongs.isEmpty()) return new ResponseEntity<>(new SongIDResponse(), HttpStatus.NOT_FOUND);
         String token = songService.getToken();
         List<FeatureResponse> userFeatures = songService.getFeatures(token,userSongs);
 
-        List<String> otherSongs = songService.getAllSongsByUser(request.getOtherID());
+        List<String> otherSongs = songService.getSongs(request.getOtherID());
         List<FeatureResponse> otherFeatures = new ArrayList<>();
         if (!otherSongs.isEmpty()) otherFeatures=songService.getFeatures(token,otherSongs);
 
@@ -34,7 +34,7 @@ public class SongController {
         mergedFeatures.addAll(userFeatures);
         mergedFeatures.addAll(otherFeatures);
 
-        return new ResponseEntity<>(songService.getRecommendation(token, userSongs, mergedFeatures, request.getUserID(), request.getChatID()),HttpStatus.OK);
+        return new ResponseEntity<>(songService.getRecommendations(token, userSongs, mergedFeatures, request.getUserID(), request.getChatID()),HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

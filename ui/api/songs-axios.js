@@ -17,5 +17,5 @@ export const findSongRecommendation = async (userID, otherID, chatID) => {
       chatID: chatID
     })
   });
-  return await response;
+  return await response.json();
 };
