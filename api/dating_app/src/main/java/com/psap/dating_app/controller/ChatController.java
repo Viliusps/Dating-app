@@ -22,7 +22,7 @@ import com.psap.dating_app.service.MessageService;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/messages")
-public class MessageController {
+public class ChatController {
     MessageService messageService;
 
     @GetMapping
@@ -44,8 +44,8 @@ public class MessageController {
     }
 
     @PostMapping
-    public ResponseEntity<Message> createMessage(@Valid @RequestBody Message message) {
-        return new ResponseEntity<>(messageService.createMessage(message), HttpStatus.CREATED);
+    public ResponseEntity<Message> writeMessage(@Valid @RequestBody Message message) {
+        return new ResponseEntity<>(messageService.writeMessage(message), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

@@ -123,7 +123,11 @@ const RegistrationPage = (props) => {
     if (gender === null || searchGender === null || purpose === null) {
       valid = false;
     }
-    if (valid) {
+    return valid;
+  };
+
+  const submit = () => {
+    if (validate()) {
       setErrorMessage('');
       register(
         birthDate,
@@ -286,7 +290,7 @@ const RegistrationPage = (props) => {
           <Text style={styles.header}>Repeat password</Text>
           <TextInput style={styles.input} secureTextEntry={true} onChangeText={setRepeatPassword} />
           <Text style={styles.error}>{errorMessage}</Text>
-          <StyledButton title="Register" onPress={() => validate()} />
+          <StyledButton title="Register" onPress={() => submit()} />
         </KeyboardAwareScrollView>
       </ScrollView>
     </ScreenWrapper>

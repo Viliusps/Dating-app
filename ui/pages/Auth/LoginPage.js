@@ -10,7 +10,7 @@ const LoginPage = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
+  const submit = () => {
     login(email, password)
       .then((response) => {
         AsyncStorage.setItem('loggedInUser', String(response.id)).then(() => {
@@ -41,7 +41,7 @@ const LoginPage = (props) => {
         <TextInput style={styles.input} onChangeText={setEmail} />
         <Text style={styles.header}>Password</Text>
         <TextInput style={styles.input} secureTextEntry={true} onChangeText={setPassword} />
-        <StyledButton title="Login" onPress={() => handleLogin()} />
+        <StyledButton title="Login" onPress={() => submit()} />
       </KeyboardAvoidingView>
     </ScreenWrapper>
   );

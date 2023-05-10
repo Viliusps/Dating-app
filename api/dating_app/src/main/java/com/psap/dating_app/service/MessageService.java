@@ -24,7 +24,7 @@ public class MessageService {
         return messageRepository.findById(id).get();
     }
 
-    public Message createMessage(Message message) {
+    public Message writeMessage(Message message) {
         Message newMessage = new Message();
         newMessage.setId(message.getId());
         newMessage.setContent(message.getContent());

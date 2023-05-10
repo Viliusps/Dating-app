@@ -23,7 +23,7 @@ import com.psap.dating_app.service.UserService;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/v1/users")
-public class UserController {
+public class AuthController {
     UserService userService;
 
     @GetMapping
@@ -40,8 +40,8 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) throws IllegalAccessException {
-        return new ResponseEntity<>(userService.createUser(user), HttpStatus.CREATED);
+    public ResponseEntity<User> register(@Valid @RequestBody User user) throws IllegalAccessException {
+        return new ResponseEntity<>(userService.register(user), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
