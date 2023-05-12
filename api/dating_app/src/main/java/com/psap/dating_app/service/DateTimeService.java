@@ -1,25 +1,31 @@
 package com.psap.dating_app.service;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
+
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
-import com.psap.dating_app.model.Calendar;
-import com.psap.dating_app.repository.DateTimeRepository;
+import com.psap.dating_app.model.Event;
+import com.psap.dating_app.repository.EventRepository;
 
 @AllArgsConstructor
 @Service
 public class DateTimeService {
-    private final DateTimeRepository dateTimeRepository;
+    private final EventRepository eventRepository;
 
-    public Calendar getRecommendation(){
-        Calendar calendar = new Calendar();
+    public Event getRecommendation(long userId){
+        Event event = new Event();
+        List<Event> userCalendar = eventRepository.getByUserId(userId);
 
-        return calendar;
+        userCalendar = assignInitialValues(userCalendar);
+
+        return event;
     }
 
-    private void assignInitialValues() {
+    private List<Event> assignInitialValues(List<Event> userCalendar) {
 
+        return userCalendar;
     }
 
     private void selectNew() {

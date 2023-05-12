@@ -1,6 +1,6 @@
 package com.psap.dating_app.controller;
 
-import com.psap.dating_app.model.Calendar;
+import com.psap.dating_app.model.Event;
 import com.psap.dating_app.service.DateTimeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.*;
@@ -14,7 +14,7 @@ public class DateTimeController {
     DateTimeService dateTimeService;
 
     @GetMapping
-    public ResponseEntity<Calendar> getRecommendation(@PathVariable("id") long id) {
-        return new ResponseEntity<>(dateTimeService.getRecommendation(), HttpStatus.OK);
+    public ResponseEntity<Event> getRecommendation(@PathVariable("userId") long userId) {
+        return new ResponseEntity<>(dateTimeService.getRecommendation(userId), HttpStatus.OK);
     }
 }
