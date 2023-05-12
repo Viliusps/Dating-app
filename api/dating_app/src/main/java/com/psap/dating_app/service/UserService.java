@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.psap.dating_app.model.User;
-import com.psap.dating_app.model.enums.Gender;
 import com.psap.dating_app.model.requests.LoginRequest;
 import com.psap.dating_app.repository.UserRepository;
 
