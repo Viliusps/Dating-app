@@ -40,6 +40,7 @@ const Home = (props) => {
               title="Chat"
               onPress={() => props.navigation.navigate('ChatPage', { userId: userId })}
             />
+            <StyledButton title="Profile" onPress={() => props.navigation.navigate('Profile')} />
           </>
         ) : (
           <>

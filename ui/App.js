@@ -10,6 +10,7 @@ import EditHobby from './pages/Hobbies/EditHobby';
 import ChatPage from './pages/Chat/ChatPage';
 import RegistrationPage from './pages/Auth/RegistrationPage';
 import LoginPage from './pages/Auth/LoginPage';
+import ProfilePage from './pages/ProfilePage';
 
 const App = () => {
   const Stack = createStackNavigator();
@@ -31,6 +32,7 @@ const App = () => {
             <Stack.Screen name="ChatPage" component={ChatPage} />
             <Stack.Screen name="Register" component={RegistrationPage} />
             <Stack.Screen name="Login" component={LoginPage} />
+            <Stack.Screen name="Profile" component={ProfilePage} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
