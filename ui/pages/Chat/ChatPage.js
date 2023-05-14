@@ -19,6 +19,8 @@ import { useHeaderHeight } from '@react-navigation/elements';
 import { getMessagesByChat, postMessage } from '../../api/messages-axios';
 import { getSentSongsByChat } from '../../api/sent-song-axios';
 import { findSongRecommendation, getSongIdById } from '../../api/songs-axios';
+import { getRandomQuestion, getSentQuestionsByChat } from '../../api/sent-questions-axios';
+import { getQuestionById } from '../../api/questions-axios';
 
 const ChatPage = (props) => {
   const [couple, setCouple] = useState(null);
@@ -33,33 +35,28 @@ const ChatPage = (props) => {
   useEffect(() => {
     getCoupleByUserId(userId).then((couple) => {
       setCouple(couple);
-      getMessagesByChat(couple.chat).then((messages) => {
-        getSentSongsByChat(couple.chat).then((songs) => {
-          var merged = messages.concat(songs);
+      updateChat(couple);
+    });
+  }, [isFocused]);
+
+  const updateChat = (couple) => {
+    getMessagesByChat(couple.chat).then((messages) => {
+      getSentSongsByChat(couple.chat).then((songs) => {
+        getSentQuestionsByChat(couple.chat).then(async (questions) => {
+          for (let i = 0; i < questions.length; i++) {
+            const response = await getQuestionById(questions[i].questionID);
+            questions[i] = Object.assign(questions[i], response);
+          }
+          var merged = messages.concat(songs, questions);
           merged.songID = undefined;
           merged.sort(function (a, b) {
             const dateA = new Date(a.date);
             const dateB = new Date(b.date);
             return dateA - dateB;
           });
+          merged.map((e, i) => (e.keyID = i));
           setMessages(merged);
         });
-      });
-    });
-  }, [isFocused]);
-
-  const updateChat = () => {
-    getMessagesByChat(couple.chat).then((messages) => {
-      getSentSongsByChat(couple.chat).then((songs) => {
-        var merged = messages.concat(songs);
-        merged.songID = undefined;
-        merged.sort(function (a, b) {
-          const dateA = new Date(a.date);
-          const dateB = new Date(b.date);
-          return dateA - dateB;
-        });
-        merged.map((e, i) => (e.keyID = i));
-        setMessages(merged);
       });
     });
     this.textInput.clear();
@@ -79,12 +76,17 @@ const ChatPage = (props) => {
             }
           ]);
         }
-        updateChat();
+        updateChat(couple);
+        setLoader(false);
+      });
+    } else if (Message === '!question') {
+      getRandomQuestion(couple.chat).then(() => {
+        updateChat(couple);
         setLoader(false);
       });
     } else {
       postMessage(Message, new Date(), userId, couple.chat).then(() => {
-        updateChat();
+        updateChat(couple);
         setLoader(false);
       });
     }
@@ -100,11 +102,11 @@ const ChatPage = (props) => {
     <ScreenWrapper>
       <KeyboardAwareScrollView
         ref={scrollViewRef}
-        style={{ maxHeight: '87%' }}
+        style={{ maxHeight: '85%' }}
         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
         {messages.length > 0 ? (
           messages.map((message) =>
-            message.sender.toString() === userId ? (
+            message?.sender?.toString() === userId ? (
               message.songID === undefined ? (
                 <View key={message.keyID} style={styles.myMessage}>
                   <Text>{message.content}</Text>
@@ -121,6 +123,10 @@ const ChatPage = (props) => {
                   <Text style={styles.songLink}>Recommended Song</Text>
                 </TouchableOpacity>
               )
+            ) : message.sender === undefined ? (
+              <View key={message.keyID} style={styles.systemMessage}>
+                <Text style={styles.systemText}>{message.question}</Text>
+              </View>
             ) : message.songID === undefined ? (
               <View key={message.keyID} style={styles.otherMessage}>
                 <Text>{message.content}</Text>
@@ -170,7 +176,7 @@ const ChatPage = (props) => {
           />
           <View style={styles.searchSection}>
             <TextInput
-              placeholder="Try '!song' ..."
+              placeholder="Try '!song' or '!question' ..."
               ref={(input) => {
                 this.textInput = input;
               }}
@@ -253,6 +259,18 @@ const styles = StyleSheet.create({
     padding: 15,
     maxWidth: '80%'
   },
+  systemMessage: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+    minHeight: 40,
+    marginLeft: 10,
+    marginTop: 10,
+    alignSelf: 'center',
+    padding: 15,
+    maxWidth: '80%'
+  },
   icon: {
     paddingRight: 10
   },
@@ -267,5 +285,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 18
   },
-  songLink: { textDecorationLine: 'underline' }
+  songLink: { textDecorationLine: 'underline' },
+  systemText: { fontStyle: 'italic', fontSize: 16 }
 });

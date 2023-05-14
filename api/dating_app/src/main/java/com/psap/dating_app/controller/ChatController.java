@@ -1,6 +1,10 @@
 package com.psap.dating_app.controller;
 import java.util.List;
 
+import com.psap.dating_app.model.Question;
+import com.psap.dating_app.model.SentQuestion;
+import com.psap.dating_app.service.QuestionService;
+import com.psap.dating_app.service.SentQuestionService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +28,8 @@ import com.psap.dating_app.service.MessageService;
 @RequestMapping("/api/v1/messages")
 public class ChatController {
     MessageService messageService;
+    QuestionService questionService;
+    SentQuestionService sentQuestionService;
 
     @GetMapping
     public ResponseEntity<List<Message>> getAllMessages() {
@@ -65,5 +71,17 @@ public class ChatController {
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @GetMapping({"/getRandomQuestion/{chatId}"})
+    public ResponseEntity<Question> getRandomQuestion(@PathVariable("chatId") long chatId) {
+        Question randomQuestion = questionService.getRandomQuestion(questionService.getRandomNumber());
+        questionService.saveQuestion(randomQuestion.getId(),chatId);
+        return new ResponseEntity<>(randomQuestion, HttpStatus.OK);
+    }
+
+    @GetMapping({"/getSentQuestions/{chatId}"})
+    public ResponseEntity<List<SentQuestion>> getSentQuestionsByChat(@PathVariable("chatId") long chatId) {
+        return new ResponseEntity<>(sentQuestionService.getSentQuestionByChat(chatId), HttpStatus.OK);
     }
 }
