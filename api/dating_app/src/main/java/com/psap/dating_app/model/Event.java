@@ -3,9 +3,12 @@ package com.psap.dating_app.model;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.psap.dating_app.model.enums.EventType;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -49,4 +52,8 @@ public class Event {
 
     @Column(name = "user_id")
     private long userId;
+
+    @Column(name = "type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EventType type;
 }
