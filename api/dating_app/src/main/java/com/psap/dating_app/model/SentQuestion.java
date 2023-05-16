@@ -21,6 +21,10 @@ public class SentQuestion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    public void saveQuestion(Question q){
+        //...
+    }
+
     @NotNull(message = "Chat is mandatory")
     @Column(name = "chat_id", nullable = false)
     private long chatID;
