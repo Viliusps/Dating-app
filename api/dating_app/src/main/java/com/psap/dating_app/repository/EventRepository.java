@@ -15,7 +15,7 @@ public interface EventRepository extends JpaRepository<Event, Long> {
 
     @Modifying
     @Query(
-        value = "DELETE FROM events e WHERE e.user_id=:userId",
+        value = "DELETE FROM events e WHERE e.user_id=:userId AND e.type = EXTERNAL",
         nativeQuery = true
     )
     @Transactional
@@ -27,4 +27,15 @@ public interface EventRepository extends JpaRepository<Event, Long> {
         nativeQuery = true
     )
     public List<Event> getByUserId(long userId);
+
+    @Query(
+        value = "SELECT * FROM events e WHERE e.user_id=:userId AND type = 'DATE'",
+        nativeQuery = true
+    )
+    public List<Event> getDatesByUser(long userId);
+    @Query(
+        value = "SELECT * FROM events e WHERE type = 'DATE'",
+        nativeQuery = true
+    )
+    public List<Event> getAllDates();
 }

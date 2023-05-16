@@ -1,11 +1,21 @@
 import React from 'react';
-import ScreenWrapper from '../styles/ScreenWrapper';
-import { Text } from 'react-native';
+import ScreenWrapper from '../../styles/ScreenWrapper';
+import StyledButton from '../../styles/StyledButton';
+import { getRecommendation } from '../../api/date-time-axios';
 
 const ChatOptionsPage = () => {
+  const handleClick = () => {
+    getRecommendation().then((response) => {
+      console.log(response);
+    });
+  };
   return (
     <ScreenWrapper>
-      <Text>Chat options page</Text>
+      <StyledButton
+        title="Get date time recommendation"
+        onPress={() => {
+          handleClick();
+        }}></StyledButton>
     </ScreenWrapper>
   );
 };

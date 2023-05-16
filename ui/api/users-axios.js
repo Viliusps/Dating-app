@@ -1,6 +1,7 @@
 import { REACT_APP_API_URL } from '@env';
 
 export const getUser = async (id) => {
+  
   const response = await fetch(REACT_APP_API_URL + `/users/${id}`);
   return await response.json();
 };

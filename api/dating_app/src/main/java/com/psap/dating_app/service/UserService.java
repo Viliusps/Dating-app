@@ -18,7 +18,7 @@ public class UserService {
     }
 
     public User getUserById(long id) {
-        return userRepository.findById(id).get();
+        return userRepository.findById(id);
     }
 
     public User register(User user) throws IllegalAccessException {
