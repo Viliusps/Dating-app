@@ -1,6 +1,8 @@
 package com.psap.dating_app.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.psap.dating_app.model.enums.CoupleStatus;
@@ -30,6 +32,8 @@ public class Couple {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    private List<User> users = new ArrayList<User>();
 
     @NotNull(message = "Date is mandatory")
     @Column(name = "date", nullable = false)
