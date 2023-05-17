@@ -1,7 +1,6 @@
 package com.psap.dating_app.model.requests;
 
 import java.util.Date;
-import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CompareTimesRequest {
-    private List<Date> selectedDates;
-    private List<Date> recommendedDates;
+public class TimeVoteRequest {
+    private Date date;
     private Integer userId;
+    
 }

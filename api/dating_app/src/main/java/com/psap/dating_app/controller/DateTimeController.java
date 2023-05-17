@@ -1,9 +1,10 @@
 package com.psap.dating_app.controller;
 
 import com.psap.dating_app.model.requests.CompareTimesRequest;
+import com.psap.dating_app.model.requests.TimeVoteRequest;
+import com.psap.dating_app.model.responses.DateTimePageResponse;
 import com.psap.dating_app.service.DateTimeService;
 
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 import java.util.Date;
@@ -21,12 +22,16 @@ public class DateTimeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<List<Date>> getRecommendation(@PathVariable("id") long userId) {
-        System.out.println("Controller");
         return new ResponseEntity<>(dateTimeService.getRecommendation(userId), HttpStatus.OK);
     }
 
     @PostMapping("/compare")
-    public void compareTimes(@Valid @RequestBody CompareTimesRequest request) {
-        dateTimeService.compareTimes(request.getSelectedTimes(), request.getRecommendedTimes());
+    public DateTimePageResponse compareTimes(@RequestBody CompareTimesRequest request) {
+        return dateTimeService.compareTimes(request.getSelectedDates(), request.getRecommendedDates(), request.getUserId());
+    }
+
+    @PostMapping("/vote")
+    public DateTimePageResponse vote(@RequestBody TimeVoteRequest request) {
+        return dateTimeService.saveVote(request.getDate(), request.getUserId());
     }
 }

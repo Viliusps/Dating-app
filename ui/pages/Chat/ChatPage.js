@@ -42,7 +42,6 @@ const ChatPage = (props) => {
   }, [isFocused]);
 
   const toggleDropdown = () => {
-    console.log('toggle');
     setIsDropdownOpen(!isDropdownOpen);
   };
 
