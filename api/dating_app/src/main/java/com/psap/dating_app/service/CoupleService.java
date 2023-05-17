@@ -48,6 +48,6 @@ public class CoupleService {
     }
 
     public Couple getCoupleByUserId(long id) {
-        return coupleRepository.findCoupleByUser(id);
+        return coupleRepository.findCurrentCoupleByUserId(id);
     }
 }

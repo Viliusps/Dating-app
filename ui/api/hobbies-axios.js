@@ -1,6 +1,7 @@
 import { REACT_APP_API_URL } from '@env';
 
 export const getHobbies = async () => {
+  
   const response = await fetch(REACT_APP_API_URL + '/hobbies');
   return await response.json();
 };

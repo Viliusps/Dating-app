@@ -1,6 +1,7 @@
 import { REACT_APP_API_URL } from '@env';
 
 export const getCouples = async () => {
+  
   const response = await fetch(REACT_APP_API_URL + '/couples');
   return await response.json();
 };
