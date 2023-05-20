@@ -35,6 +35,7 @@ const Home = (props) => {
         {userId ? (
           <>
             <StyledButton title="Logout" onPress={() => handleLogout()} />
+            <StyledButton title="Match" onPress={() => props.navigation.navigate('Match')} />
             <StyledButton title="Hobbies" onPress={() => props.navigation.navigate('Hobbies')} />
             <StyledButton
               title="Chat"
@@ -46,6 +47,7 @@ const Home = (props) => {
           <>
             <StyledButton title="Register" onPress={() => props.navigation.navigate('Register')} />
             <StyledButton title="Login" onPress={() => props.navigation.navigate('Login')} />
+
           </>
         )}
       </View>

@@ -3,6 +3,7 @@ import { Image, StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Hobbies from './pages/Hobbies/Hobbies';
+import Match from './pages/Match/Match';
 import CreateHobbies from './pages/Hobbies/CreateHobby';
 import Home from './pages/Home';
 import ScreenWrapper from './styles/ScreenWrapper';
@@ -26,6 +27,7 @@ const App = () => {
         <NavigationContainer>
           <Stack.Navigator screenOptions={screenOptions}>
             <Stack.Screen name="Home" component={Home} />
+            <Stack.Screen name="Match" component={Match} />
             <Stack.Screen name="Hobbies" component={Hobbies} />
             <Stack.Screen name="CreateHobbies" component={CreateHobbies} />
             <Stack.Screen name="EditHobby" component={EditHobby} />
