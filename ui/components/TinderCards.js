@@ -25,6 +25,7 @@ const styles = {
     height: 528,
     borderRadius: 47,
     alignItems: 'center',
+    
   },
   cardImage: {
     width: 270,
@@ -95,9 +96,7 @@ const styles = {
   buttonGap: {
     marginHorizontal: 275,
   },
-  description: {
-    margin: 10,
-    position: 'absolute',
+  description_1: {
     height: 25.83,
     maxWidth: '80%',
     minWidth: '35%',
@@ -107,42 +106,105 @@ const styles = {
     left: 10,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  description: {
+    position: 'relative',
+    height: 'auto', 
+    maxWidth: '80%',
+    minWidth: '35%',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 24,
+    marginTop: 10, 
+    marginBottom: 20, 
+    padding: 10, 
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden'
+  },
+  rowItems: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 24,
+    height: 25.83,
+    maxWidth: '80%',
+    minWidth: '35%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 5,
+    flexBasis: '30%'
+  },
+  row: {
+    marginTop: 40,
+    width: '90%',
+    flexDirection: 'row',
+    marginRight: 40,
+    flexWrap: 'wrap',
+    marginLeft: 10,
+    marginRigh: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    
+  },
+  dot: {
+    backgroundColor: '#B3AEAE',
+    position: 'absolute',
+    width: 13,
+    height: 13,
+    left: 0,
+    borderRadius: 180,
+    marginHorizontal: 5
+  },
+  customButtonDots: {
+    position: 'absolute',
+    width: 74,
+    height: 24,
+    bottom: -30,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    alignSelf: 'center'
   }
 }
 
 let db = [
   {
 
-    name: 'Richard Hendricks',
+    name: 'Pana1',
     img: require('../assets/img.png')
   },
   {
-    name: 'Erlich Bachman',
+    name: 'Pana2',
     img: require('../assets/img.png')
   },
   {
-    name: 'Monica Hall',
+    name: 'Pana3',
     img: require('../assets/img.png')
   },
   {
-    name: 'Jared Dunn',
+    name: 'Pana4',
     img: require('../assets/img.png')
   },
   {
-    name: 'Dinesh Chugtai',
+    name: 'Pana5',
     img: require('../assets/img.png')
   }
 ]
 
-const alreadyRemoved = []// This fixes issues with updating characters state forcing it to use the current state and not the state that was active when the card was created.
+const alreadyRemoved = []
 let charactersState = db
 
 const TinderCards = () => {
   const [characters, setCharacters] = useState(db)
   const [lastDirection, setLastDirection] = useState()
 
-  let city = 'Kaunas'
+  let city = 'Lives in Kaunas'
+  let description = 'Hey there! Im a lover of all things outdoors, from hiking and camping to beach days and picnics in the...'
+  let hobbies = ['hobis1', 'hobis2']
+  let zodiac = 'Virgo'
 
+  let items = [city, ...hobbies, zodiac]
   const childRefs = useMemo(() => Array(db.length).fill(0).map(i => React.createRef()), [])
 
   const CustomButton = ({ onPress, image, style }) => (
@@ -150,6 +212,16 @@ const TinderCards = () => {
       <Image source={image}></Image>
 
     </TouchableOpacity>
+  );
+
+  const ThreeDotsButton = ({ onPress }) => (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.customButtonDots}>
+        <View key='0' style={[styles.dot, {left: 0}]} />
+        <View key='1' style={[styles.dot, {left: 26}]} />
+        <View key='2' style={[styles.dot, {left: 52}]} />
+      </View>
+      </TouchableOpacity>
   );
 
   const swiped = (direction, nameToDelete) => {
@@ -165,10 +237,10 @@ const TinderCards = () => {
   const swipe = (dir) => {
     const cardsLeft = characters.filter(person => !alreadyRemoved.includes(person.name))
     if (cardsLeft.length) {
-      const toBeRemoved = cardsLeft[cardsLeft.length - 1].name // Find the card object to be removed
-      const index = db.map(person => person.name).indexOf(toBeRemoved) // Find the index of which to make the reference to
-      alreadyRemoved.push(toBeRemoved) // Make sure the next card gets removed next time if this card do not have time to exit the screen
-      childRefs[index].current.swipe(dir) // Swipe the card!
+      const toBeRemoved = cardsLeft[cardsLeft.length - 1].name
+      const index = db.map(person => person.name).indexOf(toBeRemoved) 
+      alreadyRemoved.push(toBeRemoved) 
+      childRefs[index].current.swipe(dir) 
     }
   }
 
@@ -180,7 +252,15 @@ const TinderCards = () => {
             <View style={styles.card}>
               <ImageBackground style={styles.cardImage} source={character.img}/>
               <Text style={styles.cardTitle}>{character.name}</Text>
-              <View style={styles.description}><Text>Lives in {city}</Text></View>
+              <View style={styles.row}>
+                <View  tyle={styles.rowItems} />
+
+                {items.map((item) => (
+                  <View style={styles.rowItems} ><Text>{item}</Text></View>
+                ))}
+              </View>
+                <Text style={styles.description}>{description}</Text>
+                <ThreeDotsButton/>
             </View>
           </TinderCard>
         )}
