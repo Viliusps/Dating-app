@@ -188,11 +188,10 @@ let db = [
   }
 ];
 
-const alreadyRemoved = [];
-let charactersState = db;
-
 const TinderCards = () => {
   const [characters, setCharacters] = useState(db);
+  const alreadyRemoved = [];
+  let charactersState = db;
 
   let city = 'Lives in Kaunas';
   let description =
