@@ -1,16 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Text, ScrollView, StyleSheet, View, Image } from 'react-native';
-import { getHobbies, deleteHobbies } from '../../api/hobbies-axios';
-import { useIsFocused } from '@react-navigation/native';
+import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import ScreenWrapper from '../../styles/ScreenWrapper';
-import StyledButton from '../../styles/StyledButton';
-import Swiper from 'react-native-deck-swiper';
-import { Alert } from 'react-native';
-import pic from "../../assets/img.png"
 import TinderCards from '../../components/TinderCards.js';
 
-const Match = (props) => {
-
+const Match = () => {
   return (
     <ScreenWrapper>
       <ScrollView>
@@ -31,9 +24,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   card: {
-    /* Rectangle 8 */
-
-
     position: 'absolute',
     width: 327,
     height: 528,
