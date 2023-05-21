@@ -12,9 +12,21 @@ import org.springframework.stereotype.Repository;
 public interface CoupleRepository extends JpaRepository<Couple, Long> {
     public List<Couple> findAllByOrderByIdAsc();
 
-        @Query(
+    @Query(
         value = "SELECT * FROM couples c WHERE c.first=:id OR c.second=:id",
             nativeQuery = true
         )
-    public Couple findCoupleByUser(long id);
+    public List<Couple> findCouplesByUser(long id);
+
+    @Query(
+        value = "SELECT * FROM couples c WHERE c.first=:id OR c.second=:id AND c.status = 'LIKES'",
+            nativeQuery = true
+        )
+    public Couple findCurrentCoupleByUserId(long id);
+
+    @Query(
+        value = "SELECT * FROM couples",
+            nativeQuery = true
+        )
+    public List<Couple> getAllCouples();
 }

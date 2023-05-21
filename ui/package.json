@@ -24,6 +24,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.71.7",
+    "react-native-bouncy-checkbox": "^3.0.7",
     "react-native-date-picker": "^4.2.13",
     "react-native-deck-swiper": "^2.0.14",
     "react-native-dotenv": "^3.4.8",

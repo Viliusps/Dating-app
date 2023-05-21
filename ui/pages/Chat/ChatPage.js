@@ -21,6 +21,7 @@ import { getSentSongsByChat } from '../../api/sent-song-axios';
 import { findSongRecommendation, getSongIdById } from '../../api/songs-axios';
 import { getRandomQuestion, getSentQuestionsByChat } from '../../api/sent-questions-axios';
 import { getQuestionById } from '../../api/questions-axios';
+import StyledButton from '../../styles/StyledButton';
 
 const ChatPage = (props) => {
   const [couple, setCouple] = useState(null);
@@ -31,6 +32,7 @@ const ChatPage = (props) => {
   const userId = props.route.params.userId;
   const height = useHeaderHeight();
   const scrollViewRef = useRef();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   useEffect(() => {
     getCoupleByUserId(userId).then((couple) => {
@@ -38,6 +40,10 @@ const ChatPage = (props) => {
       updateChat(couple);
     });
   }, [isFocused]);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   const updateChat = (couple) => {
     getMessagesByChat(couple.chat).then((messages) => {
@@ -100,9 +106,27 @@ const ChatPage = (props) => {
 
   return (
     <ScreenWrapper>
+      <Icon
+        name="menu"
+        type="ionicon"
+        color="white"
+        size={40}
+        style={{ alignSelf: 'flex-end', marginRight: 10 }}
+        onPress={() => toggleDropdown()}
+      />
+      {isDropdownOpen && (
+        <View>
+          {
+            <StyledButton
+              title="Options"
+              onPress={() => props.navigation.navigate('ChatOptionsPage')}
+            />
+          }
+        </View>
+      )}
       <KeyboardAwareScrollView
         ref={scrollViewRef}
-        style={{ maxHeight: '85%' }}
+        style={{ maxHeight: '80%' }}
         onContentSizeChange={() => scrollViewRef.current.scrollToEnd({ animated: true })}>
         {messages.length > 0 ? (
           messages.map((message) =>
