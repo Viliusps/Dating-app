@@ -29,4 +29,10 @@ public interface CoupleRepository extends JpaRepository<Couple, Long> {
             nativeQuery = true
         )
     public List<Couple> getAllCouples();
+
+    @Query(
+        value = "SELECT * FROM couples c WHERE c.first=:id OR c.second=:id AND c.status = 'LIKES'",
+            nativeQuery = true
+        )
+    public Couple getMatch(long id);
 }

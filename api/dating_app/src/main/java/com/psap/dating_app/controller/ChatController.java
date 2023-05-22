@@ -31,6 +31,8 @@ public class ChatController {
     QuestionService questionService;
     SentQuestionService sentQuestionService;
 
+
+
     @GetMapping
     public ResponseEntity<List<Message>> getAllMessages() {
         return new ResponseEntity<>(messageService.getAllMessages(), HttpStatus.OK);
@@ -49,7 +51,7 @@ public class ChatController {
         return new ResponseEntity<>(messageService.getMessagesByChatId(id), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping 
     public ResponseEntity<Message> writeMessage(@Valid @RequestBody Message message) {
         return new ResponseEntity<>(messageService.writeMessage(message), HttpStatus.CREATED);
     }
