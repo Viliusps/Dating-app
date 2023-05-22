@@ -13,6 +13,7 @@ import com.psap.dating_app.model.DateRecommendation;
 import com.psap.dating_app.service.DateTimeService;
 import com.psap.dating_app.repository.DatePlaceRecommendationRepository;
 import com.psap.dating_app.service.MockAPI.CalendarAPI;
+import com.psap.dating_app.service.MockAPI.GoogleMapsAPI;
 
 @AllArgsConstructor
 @Service
@@ -40,21 +41,18 @@ public class DateRecommendationService {
 
     public List<Map<String, String>> getRouteDataFromUserToMatch(Map<String, String> userLocation,
             Map<String, String> matchLocation) {
-        return CalendarAPI.getRouteVector(userLocation, matchLocation);
+        return GoogleMapsAPI.getRouteVector(userLocation, matchLocation);
     }
 
     public Map<String, String> calculateMidpointFromRoute(List<List<String>> routeVector) {
-        return CalendarAPI.calculateMidpointLocation(routeVector);
+        return GoogleMapsAPI.calculateMidpointLocation(routeVector);
     }
 
     public Map<String, Map<String, String>> getBigCitiesIn50KmRange(Map<String, String> location) {
-        return CalendarAPI.getBigCitiesIn50KmRange(location);
+        return GoogleMapsAPI.getBigCitiesIn50KmRange(location);
     }
 
     public List<String> getCityPlacesWithDateTypeAndTime() {
-        return CalendarAPI.getCityPlacesWithDateTypeAndTime();
+        return GoogleMapsAPI.getCityPlacesWithDateTypeAndTime();
     }
-
-
-
 }
