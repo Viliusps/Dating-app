@@ -15,9 +15,11 @@ import java.time.ZoneId;
 
 import com.psap.dating_app.model.Couple;
 import com.psap.dating_app.model.User;
+import com.psap.dating_app.model.Chat;
 
 import com.psap.dating_app.repository.UserRepository;
 import com.psap.dating_app.repository.CoupleRepository;
+import com.psap.dating_app.repository.ChatRepository;
 
 import com.psap.dating_app.model.enums.SearchGender;
 import com.psap.dating_app.model.enums.LoveLanguages;
@@ -30,6 +32,7 @@ import java.util.*;
 public class MatchService {
     private final CoupleRepository coupleRepository;
     private final UserRepository userRepository;
+    private final ChatRepository chatRepository;
 
     private static final Map<StarSign, StarSign> OPPOSITE_SIGNS = new HashMap<StarSign, StarSign>() {{
         put(StarSign.ARIES, StarSign.LIBRA);
@@ -46,8 +49,8 @@ public class MatchService {
         put(StarSign.PISCES, StarSign.VIRGO);
     }};
 
-    public List<Couple> getUnmatchesAndDislikes(long id) {
-        return coupleRepository.getUnmatchesAndDislikes(id);
+    public List<User> getUnmatchesAndDislikes(long id) {
+        return userRepository.getUnmatchesAndDislikes(id);
     }
 
 
@@ -83,13 +86,22 @@ public class MatchService {
             User current = allUsers.get(i);
             if (current.getId() == user.getId()) continue;
             if (user.getSearchGender().toString().equals(current.getGender().toString()) || user.getSearchGender().equals(SearchGender.ANY)) {
-                if (user.getRadius() == current.getRadius() && !blacklist.contains(current)) {
+                if (user.getRadius() <= current.getRadius() && !blacklist.contains(current)) {
                     filteredUsers.add(current);
                 }
             }
         }
          return filteredUsers;
     }
+    
+    public Couple addRecommendation(Couple couple) {
+        return coupleRepository.save(couple);
+    }
+
+    public Chat createChat() {
+        return chatRepository.save(new Chat());
+    }
+
 
     public double calculateUserWeights(User current, User user) {
         double ageDifferenceScore;
@@ -98,6 +110,11 @@ public class MatchService {
         double matchPurposeScore;
         double starSignScore;
 
+        double weightAgeDifference = 0.1;
+        double weightPersonalityType = 0.3;
+        double weightLoveLanguage = 0.3;
+        double weightMatchPurpose = 0.2;
+        double weightStarSign = 0.1;
 
         LocalDate localDate1 = current.getBirthDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         LocalDate localDate2 = user.getBirthDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -155,18 +172,19 @@ public class MatchService {
 
         else starSignScore = 0.2;
         
-        if (current.getMatchPurpose().equals(MatchPurpose.LONG)) {
-
+        if (current.getMatchPurpose().equals(user.getMatchPurpose())) {
+            matchPurposeScore = 1;
+        }
+        else {
+            matchPurposeScore = 0.5;
         }
 
-        return 0.0;
+        double totalScore = weightAgeDifference * ageDifferenceScore + weightPersonalityType * personalityTypeScore + weightLoveLanguage * loveLanguageScore + weightMatchPurpose * matchPurposeScore + weightStarSign * starSignScore;
 
+        return totalScore;
+    }
 
-
-
-        
-
-
-
+    public Couple getRecommendation(long id) {
+        return coupleRepository.getRecommendation(id);
     }
 }

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.psap.dating_app.model.enums.CoupleStatus;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,7 +30,7 @@ public class Couple {
 
     @NotNull(message = "weightDiff is mandatory")
     @Column(name = "weight_diff", nullable = false)
-    private Integer weightDiff;
+    private double weightDiff;
 
     @NotNull(message = "first is mandatory")
     @Column(name = "first", nullable = false)
@@ -41,7 +40,7 @@ public class Couple {
     @Column(name = "second", nullable = false)
     private long second;
 
-    @NotBlank(message = "status is mandatory")
+    @NotNull(message = "status is mandatory")
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
     private CoupleStatus status;

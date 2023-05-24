@@ -8,10 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import com.psap.dating_app.model.Couple;
 import com.psap.dating_app.model.User;
+import com.psap.dating_app.model.Chat;
+import com.psap.dating_app.model.enums.CoupleStatus;
 import com.psap.dating_app.service.MatchService;
 import org.springframework.web.bind.annotation.PathVariable;
-
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -46,19 +47,30 @@ public class MatchController {
         matchService.deleteAllRecommendations(id);
         List<User> allUsers = matchService.getUsers();
         User currentUser = matchService.getCurrentUser(id);
-        List<Couple> result = matchService.getUnmatchesAndDislikes(id);
-        List<User> blacklist = new ArrayList<>();
-        for (int i = 0;  i < result.size(); i++) {
-            blacklist.add(matchService.getCurrentUser(result.get(i).getId()));
-        }
+        List<User> blacklist = matchService.getUnmatchesAndDislikes(id);
         List<User> filteredUsers = matchService.filterUsers(currentUser, allUsers, blacklist);
         if (filteredUsers.isEmpty()) return new ResponseEntity<>(new Couple(), HttpStatus.NOT_FOUND);
         int i = filteredUsers.size() - 1;
         while(i >= 0) {
-            double weights = matchService.calculateUserWeights(currentUser, filteredUsers.get(i));
+            User recommendedUser = filteredUsers.get(i);
+            double weights = matchService.calculateUserWeights(currentUser, recommendedUser);
             filteredUsers.remove(i);
             i--;
+            Couple newRecommendation = new Couple();
+            newRecommendation.setStatus(CoupleStatus.RECOMMENDED);
+            newRecommendation.setDate(new Date());
+            newRecommendation.setWeightDiff(weights);
+            newRecommendation.setFirst(currentUser.getId());
+            newRecommendation.setSecond(recommendedUser.getId());
+            Chat chat = matchService.createChat();
+            newRecommendation.setChat(chat.getId());
+            matchService.addRecommendation(newRecommendation);
         }
-        return new ResponseEntity<>(matchService.getMatch(id), HttpStatus.OK);
+        Couple recommendation = matchService.getRecommendation(id);
+        return new ResponseEntity<>(recommendation, HttpStatus.OK);
+    }
+
+    @GetMapping("/update/user/{userId}/couple/{coupleId}")
+    public ResponseEntity<Couple> update(@PathVariable("userId") long userId, @PathVariable("coupleId") long coupleId) {
     }
 }

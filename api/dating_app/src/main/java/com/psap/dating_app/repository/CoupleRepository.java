@@ -60,4 +60,11 @@ public interface CoupleRepository extends JpaRepository<Couple, Long> {
             nativeQuery = true
         )
     public Couple deleteAllRecommendations(long id);
+
+    @Query(
+    value = "SELECT * FROM couples WHERE (first = :id OR second = :id) AND status = 'RECOMMENDED' AND weight_diff = (SELECT MAX(weight_diff) FROM couples WHERE (first = :id OR second = :id) AND status = 'RECOMMENDED')",
+    nativeQuery = true
+    )
+    public Couple getRecommendation(long id);
+    
 }
