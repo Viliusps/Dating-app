@@ -188,10 +188,12 @@ let db = [
   }
 ];
 
+
 const TinderCards = () => {
   const [characters, setCharacters] = useState(db);
+
   const alreadyRemoved = [];
-  let charactersState = db;
+  let charactersState = characters;
 
   let city = 'Lives in Kaunas';
   let description =
@@ -224,7 +226,9 @@ const TinderCards = () => {
     </TouchableOpacity>
   );
 
-  const swiped = (direction, nameToDelete) => {
+  const swiped = (direction, nameToDelete) => 
+  {
+    console.log(direction)
     alreadyRemoved.push(nameToDelete);
   };
 
@@ -245,7 +249,7 @@ const TinderCards = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.cardContainer}>
+      <View style={styles.cardContainer}> 
         {characters.map((character, index) => (
           <TinderCard
             ref={childRefs[index]}
@@ -256,7 +260,6 @@ const TinderCards = () => {
               <ImageBackground style={styles.cardImage} source={character.img} />
               <Text style={styles.cardTitle}>{character.name}</Text>
               <View style={styles.row}>
-                <View tyle={styles.rowItems} />
                 {items.map((item) => (
                   <View style={styles.rowItems}>
                     <Text>{item}</Text>
