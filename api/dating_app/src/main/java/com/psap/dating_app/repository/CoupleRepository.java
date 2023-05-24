@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import java.util.Date;
 
 @Repository
 public interface CoupleRepository extends JpaRepository<Couple, Long> {
@@ -19,7 +20,19 @@ public interface CoupleRepository extends JpaRepository<Couple, Long> {
     public List<Couple> findCouplesByUser(long id);
 
     @Query(
-        value = "SELECT * FROM couples c WHERE c.first=:id OR c.second=:id AND c.status = 'LIKES'",
+        value = "SELECT * FROM couples c WHERE (c.first=:id OR c.second=:id) AND c.status = 'UNDECIDED'",
+            nativeQuery = true
+        )
+    public List<Couple> getUndecidedCouples(long id);
+
+    @Query(
+        value = "SELECT * FROM couples c WHERE (c.first=:id OR c.second=:id) AND (c.status='DISLIKES' OR c.status='UNMATCHED')",
+            nativeQuery = true
+        )
+    public List<Couple> getUnmatchesAndDislikes(long id);
+
+    @Query(
+        value = "SELECT * FROM couples c WHERE (c.first=:id OR c.second=:id) AND c.status = 'LIKES'",
             nativeQuery = true
         )
     public Couple findCurrentCoupleByUserId(long id);
@@ -31,8 +44,20 @@ public interface CoupleRepository extends JpaRepository<Couple, Long> {
     public List<Couple> getAllCouples();
 
     @Query(
-        value = "SELECT * FROM couples c WHERE c.first=:id OR c.second=:id AND c.status = 'LIKES'",
+        value = "INSERT INTO couples (date, weight_diff, first, second, status, chat) VALUES (:date, :weight_diff, :first, :second, :status, :chat)",
+            nativeQuery = true
+        )
+    public List<Couple> updateRecommendations(Date date, float weight_diff, int first, int second, String status, int chat );
+
+    @Query(
+        value = "SELECT * FROM couples c WHERE (c.first=:id OR c.second=:id) AND c.status = 'LIKES'",
             nativeQuery = true
         )
     public Couple getMatch(long id);
+
+    @Query(
+        value = "DELETE FROM couples c WHERE c.status = 'RECOMMENDED'",
+            nativeQuery = true
+        )
+    public Couple deleteAllRecommendations(long id);
 }
