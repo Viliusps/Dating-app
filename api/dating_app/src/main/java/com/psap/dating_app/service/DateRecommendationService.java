@@ -10,21 +10,36 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.psap.dating_app.model.DateRecommendation;
+import com.psap.dating_app.model.Event;
+import com.psap.dating_app.model.User;
+
+
 import com.psap.dating_app.service.DateTimeService;
-import com.psap.dating_app.repository.DatePlaceRecommendationRepository;
 import com.psap.dating_app.service.MockAPI.CalendarAPI;
 import com.psap.dating_app.service.MockAPI.GoogleMapsAPI;
+
+import com.psap.dating_app.repository.UserRepository;
+
 
 @AllArgsConstructor
 @Service
 public class DateRecommendationService {
-    public List<DateRecommendation> getDateRecommendation(long userId) {
+    public DateRecommendation getDateRecommendation(long userId) {
         // jeigu yra sitas user id pas user1 arba user2, tuomet gaut date
-        List<DateRecommendation> recommendations = new ArrayList<>();
+        DateRecommendation recommendation = new DateRecommendation();
 
+        Map<String, String> userLocation = getUserLocation();
+        Map<String, String> matchLocation = getUserLocation();
+
+        List<Map<String, String>> route = getRouteDataFromUserToMatch(userLocation, matchLocation);
+        Map<String, String> midpoint = calculateMidpointFromRoute(route);
         // pagal diagrama, cia viska viduj reiktu kviest, bet keletas kvietimu turetu
         // but is front-endo, eventais, tai nededu per daug cia
-        return recommendations;
+
+        recommendation.lattitude = userLocation.get("lattitude");
+        recommendation.longitude = userLocation.get("longitude");
+
+        return recommendation;
     }
 
     public Map<String, String> getUserLocation() {
@@ -44,7 +59,7 @@ public class DateRecommendationService {
         return GoogleMapsAPI.getRouteVector(userLocation, matchLocation);
     }
 
-    public Map<String, String> calculateMidpointFromRoute(List<List<String>> routeVector) {
+    public Map<String, String> calculateMidpointFromRoute(List<Map<String, String>> routeVector) {
         return GoogleMapsAPI.calculateMidpointLocation(routeVector);
     }
 

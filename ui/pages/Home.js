@@ -22,6 +22,41 @@ const Home = (props) => {
     });
   };
 
+  const [dateRecommendation, setDateRecommendation] = useState(null);
+  const [showModal, setShowModal] = useState(false); // State to control the visibility of the modal
+  const [selectedOption, setSelectedOption] = useState(null); // State to track the selected option
+
+  const generateDateRecommendation = () => {
+    fetch(`/api/v1/dateRecommendation/${userId}`)
+      .then(response => {
+        if (response.ok) {
+          console.log(response);
+          return response.json();
+        } else {
+          throw new Error('Error retrieving date recommendation');
+        }
+      })
+      .then(dateRecommendation => {
+        // Handle the date recommendations here
+        console.log(dateRecommendation);
+        setDateRecommendation(dateRecommendation); // Set the state with the received data
+        setShowModal(true);
+      })
+      .catch(error => {
+        // Handle the error here
+        console.error(error);
+      });
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedOption(null); // Reset the selected option when closing the modal
+  };
+
+  const handleOptionSelection = (option) => {
+    setSelectedOption(option);
+  };
+
   return (
     <ScreenWrapper>
       <Text>Logged in user id: {userId}</Text>
@@ -41,6 +76,7 @@ const Home = (props) => {
               onPress={() => props.navigation.navigate('ChatPage', { userId: userId })}
             />
             <StyledButton title="Profile" onPress={() => props.navigation.navigate('Profile')} />
+            <StyledButton title="Generate date recommendation" onPress={() => generateDateRecommendation()} />
           </>
         ) : (
           <>
@@ -49,6 +85,28 @@ const Home = (props) => {
           </>
         )}
       </View>
+
+      {/* Modal */}
+      {dateRecommendation && (
+        <Modal visible={showModal} animationType="slide">
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Text>Please select an option:</Text>
+            <Button
+              title="Your location"
+              onPress={() => handleOptionSelection('yourLocation')}
+            />
+            <Button
+              title="Match location"
+              onPress={() => handleOptionSelection('matchLocation')}
+            />
+            <Button
+              title="Midpoint"
+              onPress={() => handleOptionSelection('midpoint')}
+            />
+            <Button title="Close" onPress={() => closeModal()} />
+          </View>
+        </Modal>
+      )}
     </ScreenWrapper>
   );
 };

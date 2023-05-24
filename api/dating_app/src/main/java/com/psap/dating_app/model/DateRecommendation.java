@@ -37,9 +37,9 @@ public class DateRecommendation {
     private Date date;
 
     @Column(name = "lattitude")
-    private String lattitude;
+    public String lattitude;
 
     @Column(name = "longitude")
-    private String longitude;
+    public String longitude;
 
 }

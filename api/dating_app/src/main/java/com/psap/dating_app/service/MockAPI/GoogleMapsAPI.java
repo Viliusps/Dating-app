@@ -37,13 +37,13 @@ public class GoogleMapsAPI {
         return routeVector;
     }
 
-    public static Map<String, String> calculateMidpointLocation(List<List<String>> routeVector) {
+    public static Map<String, String> calculateMidpointLocation(List<Map<String, String>> routeVector) {
         double totalLat = 0.0;
         double totalLon = 0.0;
 
-        for (List<String> coordinate : routeVector) {
-            String latitude = coordinate.get(0);
-            String longitude = coordinate.get(1);
+        for (Map<String, String> coordinate : routeVector) {
+            String latitude = coordinate.get("lattitude");
+            String longitude = coordinate.get("longitude");
 
             totalLat += Double.parseDouble(latitude);
             totalLon += Double.parseDouble(longitude);
