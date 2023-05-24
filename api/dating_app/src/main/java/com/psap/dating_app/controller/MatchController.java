@@ -14,6 +14,8 @@ import com.psap.dating_app.service.MatchService;
 import org.springframework.web.bind.annotation.PathVariable;
 import java.util.Date;
 import java.util.List;
+import java.util.Comparator;
+
 
 
 @AllArgsConstructor
@@ -35,14 +37,13 @@ public class MatchController {
     @GetMapping("/getMatch/{id}")
     public ResponseEntity<Couple> getMatch(@PathVariable("id") long id) {
         Couple couple = matchService.getMatch(id);
-        if(validate(couple)) new ResponseEntity<>(couple, HttpStatus.OK);
+        if(validate(couple))  return new ResponseEntity<>(couple, HttpStatus.OK);
 
         List<Couple> undecidedCouples = matchService.getUndecidedCouple(id);
         if (undecidedCouples.size() != 0) {
             Couple undecidedCouple = undecidedCouples.get(0);
-            if(validate(undecidedCouple)) new ResponseEntity<>(undecidedCouple, HttpStatus.OK);
+            if(validate(undecidedCouple))  return new ResponseEntity<>(undecidedCouple, HttpStatus.OK);
         }
-
 
         matchService.deleteAllRecommendations(id);
         List<User> allUsers = matchService.getUsers();
@@ -70,7 +71,19 @@ public class MatchController {
         return new ResponseEntity<>(recommendation, HttpStatus.OK);
     }
 
-    @GetMapping("/update/user/{userId}/couple/{coupleId}")
-    public ResponseEntity<Couple> update(@PathVariable("userId") long userId, @PathVariable("coupleId") long coupleId) {
+    @GetMapping("/setDislike/user/{userId}/couple/{coupleId}")
+    public ResponseEntity<Couple> setDislike(@PathVariable("userId") long userId, @PathVariable("coupleId") long coupleId) {
+        if (matchService.setDislike(coupleId) == 0) return new ResponseEntity<>(new Couple(), HttpStatus.NOT_FOUND);
+        List<Couple> allRecommendations = matchService.getRecommendations(coupleId);
+        if (allRecommendations.isEmpty()) return new ResponseEntity<>(new Couple(), HttpStatus.NOT_FOUND);
+        Couple recommendation = allRecommendations.stream().max(Comparator.comparing(Couple::getWeightDiff)).orElse(null);
+        return new ResponseEntity<>(recommendation, HttpStatus.OK);
+    }
+
+    @GetMapping("/setLike/user/{userId}/couple/{coupleId}")
+    public ResponseEntity<Couple> setLike(@PathVariable("userId") long userId, @PathVariable("coupleId") long coupleId) {
+        if (matchService.setLike(coupleId) == 0) return new ResponseEntity<>(new Couple(), HttpStatus.NOT_FOUND);
+
+        return new ResponseEntity<>(new Couple(), HttpStatus.OK);
     }
 }

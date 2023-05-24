@@ -7,7 +7,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.Modifying;
 import java.util.Date;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface CoupleRepository extends JpaRepository<Couple, Long> {
@@ -59,12 +62,36 @@ public interface CoupleRepository extends JpaRepository<Couple, Long> {
         value = "DELETE FROM couples c WHERE c.status = 'RECOMMENDED'",
             nativeQuery = true
         )
-    public Couple deleteAllRecommendations(long id);
+    public int deleteAllRecommendations(long id);
 
     @Query(
     value = "SELECT * FROM couples WHERE (first = :id OR second = :id) AND status = 'RECOMMENDED' AND weight_diff = (SELECT MAX(weight_diff) FROM couples WHERE (first = :id OR second = :id) AND status = 'RECOMMENDED')",
     nativeQuery = true
     )
     public Couple getRecommendation(long id);
+
+    @Query(
+        value = "SELECT * FROM couples WHERE (first = :id OR second = :id) AND status = 'RECOMMENDED'",
+        nativeQuery = true
+    )
+    public List<Couple> getRecommendations(@Param("id") long id);
+    
+
+    @Modifying
+    @Query(
+    value = "UPDATE couples SET status = 'DISLIKES' WHERE id = :id",
+    nativeQuery = true
+    )
+    @Transactional
+    int setDislike(@Param("id") Long id);
+
+    @Modifying
+    @Query(
+        value = "UPDATE couples SET status = 'LIKES' WHERE id = :id",
+        nativeQuery = true
+        )
+    @Transactional
+    int setLike(@Param("id") Long id);
+
     
 }

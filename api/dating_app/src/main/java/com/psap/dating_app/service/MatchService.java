@@ -187,4 +187,16 @@ public class MatchService {
     public Couple getRecommendation(long id) {
         return coupleRepository.getRecommendation(id);
     }
+
+    public List<Couple> getRecommendations(long id) {
+        return coupleRepository.getRecommendations(id);
+    }
+
+    public int setDislike(long coupleId) {
+        return coupleRepository.setDislike(coupleId);
+    }
+
+    public int setLike(long coupleId) {
+        return coupleRepository.setLike(coupleId);
+    }
 }
