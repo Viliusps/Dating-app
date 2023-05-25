@@ -23,6 +23,12 @@ public interface CoupleRepository extends JpaRepository<Couple, Long> {
     public List<Couple> findCouplesByUser(long id);
 
     @Query(
+        value = "SELECT * FROM couples c WHERE (c.first=:first AND c.second=:second) OR (c.first=:second AND c.second=:first)",
+            nativeQuery = true
+        )
+    public Couple getCouple(long first, long second);
+
+    @Query(
         value = "SELECT * FROM couples c WHERE (c.first=:id OR c.second=:id) AND c.status = 'UNDECIDED'",
             nativeQuery = true
         )
@@ -59,13 +65,19 @@ public interface CoupleRepository extends JpaRepository<Couple, Long> {
     public Couple getMatch(long id);
 
     @Query(
-        value = "DELETE FROM couples c WHERE c.status = 'RECOMMENDED'",
+        value = "DELETE FROM couples c WHERE c.first = :id AND c.status = 'RECOMMENDED'",
             nativeQuery = true
         )
     public int deleteAllRecommendations(long id);
 
     @Query(
-    value = "SELECT * FROM couples WHERE (first = :id OR second = :id) AND status = 'RECOMMENDED' AND weight_diff = (SELECT MAX(weight_diff) FROM couples WHERE (first = :id OR second = :id) AND status = 'RECOMMENDED')",
+        value = "DELETE FROM couples c WHERE c.status = 'DISLIKES'",
+            nativeQuery = true
+        )
+    public int deleteAllDislikes();
+
+    @Query(
+    value = "SELECT * FROM couples WHERE (first = :id OR second = :id) AND status = 'RECOMMENDED' AND weight_diff = (SELECT MAX(weight_diff) FROM couples WHERE (first = :id OR second = :id) AND status = 'RECOMMENDED') LIMIT 1",
     nativeQuery = true
     )
     public Couple getRecommendation(long id);
@@ -75,7 +87,12 @@ public interface CoupleRepository extends JpaRepository<Couple, Long> {
         nativeQuery = true
     )
     public List<Couple> getRecommendations(@Param("id") long id);
-    
+
+    @Query(
+        value = "SELECT * FROM couples WHERE (first = :currentUserId AND second = :otherUserId) OR (first = :otherUserId AND second = :currentUserId) AND status = 'LIKES'",
+        nativeQuery = true
+    )
+    public Couple checkMatch(@Param("currentUserId") long currentUserId, @Param("otherUserId") long otherUserId);
 
     @Modifying
     @Query(
@@ -87,11 +104,19 @@ public interface CoupleRepository extends JpaRepository<Couple, Long> {
 
     @Modifying
     @Query(
-        value = "UPDATE couples SET status = 'LIKES' WHERE id = :id",
+        value = "UPDATE couples SET status = 'UNDECIDED' WHERE id = :id AND status = 'RECOMMENDED'",
         nativeQuery = true
         )
     @Transactional
-    int setLike(@Param("id") Long id);
+    int setUndecided(@Param("id") long id);
+
+    @Modifying
+    @Query(
+        value = "UPDATE couples SET status = 'LIKES' WHERE id = :id AND status = 'UNDECIDED'",
+        nativeQuery = true
+        )
+    @Transactional
+    int setLike(@Param("id") long id);
 
     
 }

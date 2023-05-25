@@ -65,4 +65,7 @@ public class CoupleController {
     public ResponseEntity<Couple> getCoupleByUserId(@PathVariable("id") long id) {
         return new ResponseEntity<>(coupleService.getCoupleByUserId(id), HttpStatus.OK);
     }
+
+
+    
 }

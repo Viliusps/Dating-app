@@ -3,6 +3,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.AbstractMap.SimpleEntry;
+
 
 import org.hibernate.grammars.hql.HqlParser.CurrentDateFunctionContext;
 import org.springframework.dao.DataAccessException;
@@ -25,6 +27,7 @@ import com.psap.dating_app.model.enums.SearchGender;
 import com.psap.dating_app.model.enums.LoveLanguages;
 import com.psap.dating_app.model.enums.StarSign;
 import com.psap.dating_app.model.enums.MatchPurpose;
+import com.psap.dating_app.model.enums.CoupleStatus;
 import java.util.*;
 
 @AllArgsConstructor
@@ -80,6 +83,14 @@ public class MatchService {
         return userRepository.findById(id);
     }
 
+    public Couple getCouple(long firstUser, long secondUser) {
+        return coupleRepository.getCouple(firstUser, secondUser);
+    }
+
+    public User getUser(long currentUserId, Couple couple) {
+        return userRepository.findById(couple.getFirst() == currentUserId ? couple.getSecond() : couple.getFirst());
+    }
+
     public List<User> filterUsers(User user, List<User> allUsers, List<User> blacklist) {
         List<User> filteredUsers = new ArrayList<>();
         for (int i = 0; i < allUsers.size(); i++) {
@@ -122,24 +133,21 @@ public class MatchService {
         int ageDifference = period.getYears();
         ageDifferenceScore = 1.0 - (ageDifference / 100.0);
 
-        if (current.getLoveLanguage().equals(user.getLoveLanguage())) {
+        Map<SimpleEntry<LoveLanguages, LoveLanguages>, Double> scores = new HashMap<>();
+        scores.put(new SimpleEntry<>(LoveLanguages.ACTS_OF_SERVICE, LoveLanguages.RECEIVING_GIFTS), 0.5);
+        scores.put(new SimpleEntry<>(LoveLanguages.RECEIVING_GIFTS, LoveLanguages.ACTS_OF_SERVICE), 0.5);
+        scores.put(new SimpleEntry<>(LoveLanguages.PHYSICAL_TOUCH, LoveLanguages.QUALITY_TIME), 0.5);
+        scores.put(new SimpleEntry<>(LoveLanguages.QUALITY_TIME, LoveLanguages.PHYSICAL_TOUCH), 0.5);
+        scores.put(new SimpleEntry<>(LoveLanguages.WORDS_OF_AFFIRMATION, LoveLanguages.QUALITY_TIME), 0.5);
+        scores.put(new SimpleEntry<>(LoveLanguages.QUALITY_TIME, LoveLanguages.WORDS_OF_AFFIRMATION), 0.5);
+        
+        if (current.getLoveLanguage().toString().equals(user.getLoveLanguage().toString())) {
             loveLanguageScore = 0.8;
-        }
-        else if ((current.getLoveLanguage().equals(LoveLanguages.ACTS_OF_SERVICE) && user.getLoveLanguage().equals(LoveLanguages.RECEIVING_GIFTS)) || 
-        (current.getLoveLanguage().equals(LoveLanguages.RECEIVING_GIFTS) && user.getLoveLanguage().equals(LoveLanguages.ACTS_OF_SERVICE))) {
-            loveLanguageScore = 0.5;
-        }
-
-        else if ((current.getLoveLanguage().equals(LoveLanguages.ACTS_OF_SERVICE) && user.getLoveLanguage().equals(LoveLanguages.RECEIVING_GIFTS)) || 
-        (current.getLoveLanguage().equals(LoveLanguages.RECEIVING_GIFTS) && user.getLoveLanguage().equals(LoveLanguages.ACTS_OF_SERVICE))) {
-            loveLanguageScore = 0.5;
+        } else {
+            SimpleEntry<LoveLanguages, LoveLanguages> loveLanguagesPair = new SimpleEntry<>(current.getLoveLanguage(), user.getLoveLanguage());
+            loveLanguageScore = scores.getOrDefault(loveLanguagesPair, 0.1);
         }
 
-        else if ((current.getLoveLanguage().equals(LoveLanguages.PHYSICAL_TOUCH) && user.getLoveLanguage().equals(LoveLanguages.QUALITY_TIME)) || 
-        (current.getLoveLanguage().equals(LoveLanguages.QUALITY_TIME) && user.getLoveLanguage().equals(LoveLanguages.PHYSICAL_TOUCH))) {
-            loveLanguageScore = 0.5;
-        }
-        else loveLanguageScore = 0.1;
 
         if (current.getPersonalityType().equals(user.getPersonalityType())) {
             personalityTypeScore = 1.0;
@@ -188,15 +196,42 @@ public class MatchService {
         return coupleRepository.getRecommendation(id);
     }
 
-    public List<Couple> getRecommendations(long id) {
-        return coupleRepository.getRecommendations(id);
+    public List<User> getRecommendations(long id) {
+        return userRepository.getRecommendations(id);
     }
 
     public int setDislike(long coupleId) {
         return coupleRepository.setDislike(coupleId);
     }
 
+    public int setUndecided(long coupleId) {
+        return coupleRepository.setUndecided(coupleId);
+    }
+
     public int setLike(long coupleId) {
         return coupleRepository.setLike(coupleId);
     }
+
+    public int deleteAllDislikes() {
+        return coupleRepository.deleteAllDislikes();
+    }
+
+    public Couple checkMatch(long currentUserId, long otherUserId) {
+        return coupleRepository.checkMatch(currentUserId, otherUserId);
+    }
+
+    public boolean updateCoupleStatus(Couple couple) {
+        if (couple.getStatus().equals(CoupleStatus.RECOMMENDED)) {
+            couple.setStatus(CoupleStatus.UNDECIDED);
+            coupleRepository.save(couple);
+            return false;
+        }
+        else if ((couple.getStatus().equals(CoupleStatus.UNDECIDED))) {
+            couple.setStatus(CoupleStatus.LIKES);
+            coupleRepository.save(couple);
+            return true;
+        }
+        else return false;
+    }
+
 }
