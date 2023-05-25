@@ -56,7 +56,7 @@ const Match = (props) => {
     if (direction == 'left') {
       try {
         const response = await setDislike(currentId, character.id);
-        //setCharacters(response);
+        setCharacters(response);
       } catch (error) {
         console.log('Error setting dislike:', error);
       }
