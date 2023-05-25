@@ -6,9 +6,12 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.psap.dating_app.model.enums.Gender;
+import com.psap.dating_app.model.enums.LoveLanguages;
 import com.psap.dating_app.model.enums.MatchPurpose;
+import com.psap.dating_app.model.enums.PersonalityType;
 import com.psap.dating_app.model.enums.Role;
 import com.psap.dating_app.model.enums.SearchGender;
+import com.psap.dating_app.model.enums.StarSign;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -96,13 +99,16 @@ public class User {
     private Boolean blocked;
 
     @Column(name = "star_sign", nullable = false)
-    private String starSign;
+    @Enumerated(EnumType.STRING)
+    private StarSign starSign;
 
     @Column(name = "personality_type", nullable = false)
-    private String personalityType;
+    @Enumerated(EnumType.STRING)
+    private PersonalityType personalityType;
 
     @Column(name = "love_language", nullable = false)
-    private String loveLanguage;
+    @Enumerated(EnumType.STRING)
+    private LoveLanguages loveLanguage;
 
     @NotNull(message = "Match purpose is mandatory")
     @Column(name = "match_purpose", nullable = false)

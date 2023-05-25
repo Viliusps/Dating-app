@@ -1,0 +1,25 @@
+INSERT INTO users (id, name, surname, email, password, phone, role, birth_date, gender, height, picture, description, search_gender, radius, points, block_end, blocked, star_sign, personality_type, love_language, match_purpose) VALUES
+(7, 'Septimus', 'Septimusson', 'septimus@gmail.com', 'password7', '789012345', 'USER', '1988-06-20 00:00:00+00', 'MALE', '190', '', 'description7', 'FEMALE', '50', '10', null, false, 'GEMINI', 'ISFJ', 'ACTS_OF_SERVICE', 'LONG'),
+(8, 'Octavia', 'Octaviason', 'octavia@gmail.com', 'password8', '890123456', 'USER', '1990-07-22 00:00:00+00', 'FEMALE', '168', '', 'description8', 'MALE', '60', '20', null, false, 'CANCER', 'ENFJ', 'QUALITY_TIME', 'SHORT'),
+(9, 'Nonus', 'Nonusson', 'nonus@gmail.com', 'password9', '901234567', 'USER', '1992-08-24 00:00:00+00', 'MALE', '182', '', 'description9', 'FEMALE', '70', '30', null, false, 'VIRGO', 'INTP', 'RECEIVING_GIFTS', 'LONG'),
+(10, 'Decima', 'Decimason', 'decima@gmail.com', 'password10', '012345678', 'USER', '1994-09-26 00:00:00+00', 'FEMALE', '160', '', 'description10', 'MALE', '80', '40', null, false, 'LIBRA', 'ENTJ', 'PHYSICAL_TOUCH', 'SHORT'),
+(11, 'Undecimus', 'Undecimusson', 'undecimus@gmail.com', 'password11', '123456789', 'USER', '1996-10-28 00:00:00+00', 'MALE', '178', '', 'description11', 'FEMALE', '90', '50', null, false, 'SCORPIO', 'ISFP', 'WORDS_OF_AFFIRMATION', 'LONG'),
+(12, 'Amanda', 'Baker', 'amandabaker@gmail.com', 'password12', '234567890', 'USER', '1998-11-30 00:00:00+00', 'FEMALE', '165', '', 'description12', 'MALE', '60', '60', null, false, 'SAGITTARIUS', 'ESFJ', 'ACTS_OF_SERVICE', 'SHORT'),
+(13, 'Brian', 'Clark', 'brianclark@gmail.com', 'password13', '345678901', 'USER', '2000-12-01 00:00:00+00', 'MALE', '180', '', 'description13', 'FEMALE', '70', '70', null, false, 'CAPRICORN', 'ENTP', 'QUALITY_TIME', 'LONG'),
+(14, 'Chloe', 'Davis', 'chloedavis@gmail.com', 'password14', '456789012', 'USER', '2002-01-03 00:00:00+00', 'FEMALE', '160', '', 'description14', 'MALE', '80', '80', null, false, 'AQUARIUS', 'ISTJ', 'RECEIVING_GIFTS', 'SHORT'),
+(15, 'Derek', 'Evans', 'derekevans@gmail.com', 'password15', '567890123', 'USER', '2004-02-04 00:00:00+00', 'MALE', '185', '', 'description15', 'FEMALE', '90', '90', null, false, 'PISCES', 'ENFJ', 'PHYSICAL_TOUCH', 'LONG'),
+(16, 'Eva', 'Foster', 'evafoster@gmail.com', 'password16', '678901234', 'USER', '2006-03-06 00:00:00+00', 'FEMALE', '162', '', 'description16', 'MALE', '100', '100', null, false, 'ARIES', 'INTP', 'WORDS_OF_AFFIRMATION', 'SHORT'),
+(17, 'Frank', 'Garcia', 'frankgarcia@gmail.com', 'password17', '789012345', 'USER', '2008-04-07 00:00:00+00', 'MALE', '182', '', 'description17', 'FEMALE', '110', '110', null, false, 'TAURUS', 'ESTJ', 'ACTS_OF_SERVICE', 'LONG'),
+(18, 'Grace', 'Harris', 'graceharris@gmail.com', 'password18', '890123456', 'USER', '2010-05-09 00:00:00+00', 'FEMALE', '165', '', 'description18', 'MALE', '120', '120', null, false, 'GEMINI', 'ISFJ', 'QUALITY_TIME', 'SHORT'),
+(19, 'Henry', 'Iverson', 'henryiverson@gmail.com', 'password19', '901234567', 'USER', '2012-06-10 00:00:00+00', 'MALE', '180', '', 'description19', 'FEMALE', '130', '130', null, false, 'CANCER', 'ENTP', 'RECEIVING_GIFTS', 'LONG'),
+(20, 'Iris', 'Jones', 'irisjones@gmail.com', 'password20', '012345678', 'USER', '2014-07-12 00:00:00+00', 'FEMALE', '163', '', 'description20', 'MALE', '140', '140', null, false, 'LEO', 'ISTP', 'PHYSICAL_TOUCH', 'SHORT'),
+(21, 'Jack', 'King', 'jackking@gmail.com', 'password21', '123456789', 'USER', '2016-08-13 00:00:00+00', 'MALE', '190', '', 'description21', 'FEMALE', '150', '150', null, false, 'VIRGO', 'ENFJ', 'WORDS_OF_AFFIRMATION', 'LONG'),
+(22, 'Karen', 'Lewis', 'karenlewis@gmail.com', 'password22', '234567890', 'USER', '2018-09-14 00:00:00+00', 'FEMALE', '167', '', 'description22', 'MALE', '60', '60', null, false, 'LIBRA', 'ESFP', 'ACTS_OF_SERVICE', 'SHORT'),
+(23, 'Larry', 'Martinez', 'larrymartinez@gmail.com', 'password23', '345678901', 'USER', '2020-10-15 00:00:00+00', 'MALE', '175', '', 'description23', 'FEMALE', '70', '70', null, false, 'SCORPIO', 'ENTP', 'QUALITY_TIME', 'LONG'),
+(24, 'Molly', 'Nelson', 'mollynelson@gmail.com', 'password24', '456789012', 'USER', '2001-11-16 00:00:00+00', 'FEMALE', '158', '', 'description24', 'MALE', '80', '80', null, false, 'SAGITTARIUS', 'ISFJ', 'RECEIVING_GIFTS', 'SHORT'),
+(25, 'Norman', 'Olsen', 'normanolsen@gmail.com', 'password25', '567890123', 'USER', '2000-12-17 00:00:00+00', 'MALE', '177', '', 'description25', 'FEMALE', '90', '90', null, false, 'CAPRICORN', 'ISTP', 'PHYSICAL_TOUCH', 'LONG'),
+(26, 'Olivia', 'Parker', 'oliviaparker@gmail.com', 'password26', '678901234', 'USER', '2002-01-18 00:00:00+00', 'FEMALE', '163', '', 'description26', 'MALE', '100', '100', null, false, 'AQUARIUS', 'ENFJ', 'WORDS_OF_AFFIRMATION', 'SHORT'),
+(27, 'Peter', 'Quincy', 'peterquincy@gmail.com', 'password27', '789012345', 'USER', '2004-02-19 00:00:00+00', 'MALE', '180', '', 'description27', 'FEMALE', '110', '110', null, false, 'PISCES', 'ESTJ', 'ACTS_OF_SERVICE', 'LONG');
+
+
+SELECT SETVAL('public.users_id_seq', COALESCE(MAX(id), 1) ) FROM public.users;

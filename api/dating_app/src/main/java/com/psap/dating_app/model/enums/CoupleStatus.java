@@ -4,5 +4,6 @@ public enum CoupleStatus {
     LIKES,
     DISLIKES,
     UNDECIDED,
-    UNMATCHED
+    UNMATCHED,
+    RECOMMENDED
 }
