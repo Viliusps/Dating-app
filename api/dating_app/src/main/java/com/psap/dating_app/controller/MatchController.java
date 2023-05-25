@@ -87,9 +87,7 @@ public class MatchController {
         Couple couple = matchService.getCouple(currentUserId, otherUserId);
         long coupleId = couple.getId();
         List<User> matches = new ArrayList<User>();
-        if (matchService.setDislike(coupleId) == 0) {
-            return new ResponseEntity<>(matches, HttpStatus.NOT_FOUND);
-        } 
+        matchService.setDislike(coupleId);
         List<User> allRecommendations = matchService.getRecommendations(currentUserId);
         if (allRecommendations.isEmpty()) return new ResponseEntity<>(matches, HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(allRecommendations, HttpStatus.OK);
