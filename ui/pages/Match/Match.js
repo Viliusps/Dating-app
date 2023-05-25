@@ -5,13 +5,14 @@ import TinderCard from 'react-tinder-card';
 import { ImageBackground, Text, Image, TouchableOpacity } from 'react-native';
 import { getMatch, setDislike, setLike} from '../../api/matches-axios';
 import { useIsFocused } from '@react-navigation/core';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 const Match = (props) => {
   const [characters, setCharacters] = useState([]);
+  const [userId, setUserId] = useState(null);
   const isFocused = useIsFocused();
-  const currentId = 3;
 
   const LoveLanguages = {
     WORDS_OF_AFFIRMATION: 'Words of Affirmation',
@@ -22,6 +23,9 @@ const Match = (props) => {
   };
 
   useEffect(() => {
+    AsyncStorage.getItem('loggedInUser').then((response) => {
+      setUserId(response);
+    });
     getMatch(currentId)
       .then((data) => {
         if (Array.isArray(data)) {
@@ -38,6 +42,8 @@ const Match = (props) => {
 
   const alreadyRemoved = [];
   let charactersState = characters;
+  const currentId = userId;
+  console.log(userId)
 
 
   const ThreeDotsButton = ({ onPress }) => (
