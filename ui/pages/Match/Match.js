@@ -75,8 +75,8 @@ const Match = (props) => {
   };
 
   const outOfFrame = (name) => {
-    charactersState = charactersState.filter((character) => character.name !== name);
-    setCharacters(charactersState);
+    setCharacters(prevCharacters => prevCharacters.filter(character => character.name !== name));
+
   };
 
   return (
@@ -84,14 +84,14 @@ const Match = (props) => {
       <ScrollView>
       <View style={styles.container}>
       <View style={styles.cardContainer}> 
-        {characters?.map((character, index) => {
+        {characters?.length ? characters?.map((character, index) => {
           const birthDate = new Date(character.birthDate)
           const currentDate = new Date();
           let age = currentDate.getFullYear() - birthDate.getFullYear();
           let items = [character.personalityType, `${age} years old`, character.starSign, LoveLanguages[character.loveLanguage], character.gender, `${character.matchPurpose}-TERM`];
           return (
           <TinderCard
-            key={character.name}
+            key={character.id}
             onSwipe={(dir) => swiped(dir, character.name, character, charactersState)}
             onCardLeftScreen={() => outOfFrame(character.name)}>
             <View style={styles.card}>
@@ -108,7 +108,7 @@ const Match = (props) => {
               <ThreeDotsButton />
             </View>
           </TinderCard>
-        )})}
+        )}) : (<Text style={styles.noCardsText}>You swiped all users in your area</Text>)}
       </View>
     </View>
       </ScrollView>
@@ -138,10 +138,10 @@ const styles = {
     position: 'absolute',
     backgroundColor: '#EE7972',
     width: '100%',
-    height: 528,
-    marginTop: "10%",
+    height: 560,
     borderRadius: 47,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   cardImage: {
     width: 270,
@@ -252,12 +252,9 @@ const styles = {
     marginTop: 40,
     width: '90%',
     flexDirection: 'row',
-    marginRight: 40,
     flexWrap: 'wrap',
-    marginLeft: 10,
-    marginRigh: 10,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'space-evenly'
   },
   dot: {
     backgroundColor: '#B3AEAE',
@@ -271,14 +268,20 @@ const styles = {
   customButtonDots: {
     position: 'absolute',
     width: 74,
+    bottom: 3,
     height: 24,
-    bottom: -30,
     backgroundColor: 'white',
     borderRadius: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    alignSelf: 'center'
+    alignSelf: 'center',
+  },
+  noCardsText: {
+    textAlign: 'center', 
+    fontSize: 24, 
+    color: '#333', 
+    marginTop: 50, 
   }
 };
