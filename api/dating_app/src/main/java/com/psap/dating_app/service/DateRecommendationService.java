@@ -24,20 +24,27 @@ import com.psap.dating_app.repository.UserRepository;
 @AllArgsConstructor
 @Service
 public class DateRecommendationService {
-    public DateRecommendation getDateRecommendation(long userId) {
-        // jeigu yra sitas user id pas user1 arba user2, tuomet gaut date
+    public DateRecommendation getDateRecommendation(long userId, String locationOption) {
         DateRecommendation recommendation = new DateRecommendation();
 
         Map<String, String> userLocation = getUserLocation();
         Map<String, String> matchLocation = getUserLocation();
 
         List<Map<String, String>> route = getRouteDataFromUserToMatch(userLocation, matchLocation);
-        Map<String, String> midpoint = calculateMidpointFromRoute(route);
-        // pagal diagrama, cia viska viduj reiktu kviest, bet keletas kvietimu turetu
-        // but is front-endo, eventais, tai nededu per daug cia
+        Map<String, String> midpointLocation = calculateMidpointFromRoute(route);
 
-        recommendation.lattitude = userLocation.get("lattitude");
-        recommendation.longitude = userLocation.get("longitude");
+        if (locationOption == "yourLocation") {
+            recommendation.lattitude = userLocation.get("lattitude");
+            recommendation.longitude = userLocation.get("longitude");
+        }
+        else if (locationOption == "matchLocation") {
+            recommendation.lattitude = matchLocation.get("lattitude");
+            recommendation.lattitude = matchLocation.get("longitude");
+        }
+        else if (locationOption == "matchLocation") {
+            recommendation.lattitude = midpointLocation.get("lattitude");
+            recommendation.lattitude = midpointLocation.get("longitude");
+        }
 
         return recommendation;
     }

@@ -1,10 +1,13 @@
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Modal } from 'react-native';
 import ScreenWrapper from '../styles/ScreenWrapper';
 import StyledButton from '../styles/StyledButton';
 import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import { putRecommendation } from '../api/date-recommendation-axios';
+import DateModal from './DateRecommendation/DateModal';
+import LocationModal from './DateRecommendation/LocationModal';
 
 const Home = (props) => {
   const [userId, setUserId] = useState(null);
@@ -25,29 +28,33 @@ const Home = (props) => {
   const [dateRecommendation, setDateRecommendation] = useState(null);
   const [showModal, setShowModal] = useState(false); // State to control the visibility of the modal
   const [selectedOption, setSelectedOption] = useState(null); // State to track the selected option
+  const [showDateModal, setShowDateModal] = useState(false); // State to control the visibility of the date modal
 
-  const generateDateRecommendation = () => {
-    fetch(`/api/v1/dateRecommendation/${userId}`)
+  const generateDateRecommendation = (selectedOption) => {
+    const fetchUrl = `http://localhost:8080/api/v1/dateRecommendation/${userId}`;
+      
+    fetch(fetchUrl)
       .then(response => {
-        if (response.ok) {
           console.log(response);
           return response.json();
-        } else {
-          throw new Error('Error retrieving date recommendation');
-        }
-      })
-      .then(dateRecommendation => {
-        // Handle the date recommendations here
-        console.log(dateRecommendation);
-        setDateRecommendation(dateRecommendation); // Set the state with the received data
-        setShowModal(true);
-      })
-      .catch(error => {
-        // Handle the error here
-        console.error(error);
-      });
+        })
+        .catch(error => {
+          console.error('Error retrieving date recommendation:', error);
+        })
+        .then(dateRecommendation => {
+          // Handle the date recommendations here
+          console.log("dateRecommendation");
+          console.log(dateRecommendation);
+          setDateRecommendation(dateRecommendation); // Set the state with the received data
+          setShowModal(true);
+        })
+        .catch(error => {
+          // Handle the error here
+          console.error(error);
+        });
   };
 
+  
   const closeModal = () => {
     setShowModal(false);
     setSelectedOption(null); // Reset the selected option when closing the modal
@@ -55,6 +62,14 @@ const Home = (props) => {
 
   const handleOptionSelection = (option) => {
     setSelectedOption(option);
+    generateDateRecommendation(option);
+    setShowDateModal(true);
+  };
+  
+  const handleDateOptionSelection = (dateType) => {
+    // Handle the date type selection here
+    console.log('Selected date type:', dateType);
+    setShowDateModal(false);
   };
 
   return (
@@ -86,27 +101,24 @@ const Home = (props) => {
         )}
       </View>
 
-      {/* Modal */}
+      {/* Location Modal */}
       {dateRecommendation && (
-        <Modal visible={showModal} animationType="slide">
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Please select an option:</Text>
-            <Button
-              title="Your location"
-              onPress={() => handleOptionSelection('yourLocation')}
-            />
-            <Button
-              title="Match location"
-              onPress={() => handleOptionSelection('matchLocation')}
-            />
-            <Button
-              title="Midpoint"
-              onPress={() => handleOptionSelection('midpoint')}
-            />
-            <Button title="Close" onPress={() => closeModal()} />
-          </View>
-        </Modal>
+        <LocationModal
+          showModal={showModal}
+          handleOptionSelection={handleOptionSelection}
+        />
       )}
+
+      {/* Date Modal */}
+      {showDateModal && (
+        <DateModal
+          showDateModal={showDateModal}
+          handleDateOptionSelection={handleDateOptionSelection}
+          setShowDateModal={setShowDateModal}
+          closeModal={closeModal}
+        />
+      )}
+
     </ScreenWrapper>
   );
 };

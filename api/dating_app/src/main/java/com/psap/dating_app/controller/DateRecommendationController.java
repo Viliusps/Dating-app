@@ -21,14 +21,8 @@ import org.springframework.web.bind.annotation.*;
 public class DateRecommendationController {
     DateRecommendationService dateRecommendationService;
 
-    // @GetMapping("/{userId}")
-    // public ResponseEntity<DateRecommendation> getDateRecommendation(@PathVariable("userId") long userId) {        
-    //     return new ResponseEntity<>(dateRecommendationService.getDateRecommendation(userId), HttpStatus.OK);
-    // }
-
-    @GetMapping(value = "/{userId}", produces = "application/json")
-    public ResponseEntity<DateRecommendation> getDateRecommendation(@PathVariable("userId") long userId) {        
-        System.out.println(new ResponseEntity<>(dateRecommendationService.getDateRecommendation(userId), HttpStatus.OK));
-        return new ResponseEntity<>(dateRecommendationService.getDateRecommendation(userId), HttpStatus.OK);
+    @GetMapping("/{userId}")
+    public ResponseEntity<DateRecommendation> getDateRecommendation(@PathVariable("userId") long userId, @RequestParam("selectedOption") String selectedOption) {        
+        return new ResponseEntity<>(dateRecommendationService.getDateRecommendation(userId, selectedOption), HttpStatus.OK);
     }
 }
